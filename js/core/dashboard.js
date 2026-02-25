@@ -1,49 +1,29 @@
-function loadLogin(){
+function loadDashboard(){
 
 document.getElementById("app").innerHTML=`
-<div style="height:100vh;display:flex;justify-content:center;align-items:center">
 
-<div class="card" style="width:300px;text-align:center">
+<div style="display:flex;height:100vh">
 
-<h2>Hotel ERP Login</h2>
+<!-- Sidebar -->
+<div style="width:250px;background:#020617;padding:20px;color:white">
 
-<input id="username" placeholder="Username"
-style="width:100%;padding:10px;margin:10px 0">
+<h2>Hotel ERP</h2>
 
-<input id="password" type="password" placeholder="Password"
-style="width:100%;padding:10px;margin:10px 0">
+<button onclick="loadRoomManagement()">Room Management</button>
 
-<button onclick="login()" style="background:#22c55e;color:white">
-Login
+<button onclick="logout()" 
+style="background:red;color:white;margin-top:20px">
+Logout
 </button>
 
 </div>
+
+<!-- Content -->
+<div id="dashboardContent" style="flex:1;padding:30px">
+<h2>Welcome Dashboard ✅</h2>
 </div>
+
+</div>
+
 `;
-}
-
-function login(){
-
-let u=document.getElementById("username").value;
-let p=document.getElementById("password").value;
-
-if(u==="admin" && p==="1234"){
-localStorage.setItem("login","ok");
-loadDashboard();
-}else{
-alert("Wrong login");
-}
-}
-
-function checkLogin(){
-if(localStorage.getItem("login")==="ok"){
-loadDashboard();
-}else{
-loadLogin();
-}
-}
-
-function logout(){
-localStorage.clear();
-loadLogin();
 }
