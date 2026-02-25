@@ -1,30 +1,61 @@
 function loadDashboard(){
 
-const app=document.getElementById("app");
+let app=document.getElementById("app");
 
 app.innerHTML=`
-<div style="min-height:100vh;
-background:linear-gradient(135deg,#6a11cb,#2575fc,#2ecc71);
-color:white;padding:20px">
+<div style="padding:20px">
 
-<h2 style="text-align:center">🏨 Hotel Dashboard</h2>
+<h2>🏨 Hotel ERP Pro Dashboard</h2>
 
-<div style="text-align:center;margin-bottom:20px">
+<div style="display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px">
 
-<button onclick="loadRoomManagement()" style="padding:10px;margin:5px">
-Room Management
-</button>
-
-<button onclick="loadFinance()" style="padding:10px;margin:5px">
-Finance
-</button>
-
-<button onclick="logout()" style="padding:10px;margin:5px;background:red;color:white">
-Logout
-</button>
+<div class="card">🛏 Rooms : ${rooms.length}</div>
+<div class="card">🍽 Menu : ${menus.length}</div>
+<div class="card">💰 Bills : ${bills.length}</div>
 
 </div>
+
+<br>
+
+<div class="card">
+<canvas id="chart"></canvas>
+</div>
+
+<br>
+
+<button onclick="loadRoomManagement()">Room Management</button>
+<button onclick="loadMenuManagement()">Restaurant Menu</button>
+<button onclick="loadFinance()">Finance</button>
+<button onclick="logout()" style="background:red;color:white">Logout</button>
 
 </div>
 `;
+
+drawChart();
+
+}
+
+function drawChart(){
+
+setTimeout(()=>{
+
+let ctx=document.getElementById("chart");
+
+if(!ctx) return;
+
+new Chart(ctx,{
+type:"bar",
+data:{
+labels:["Rooms","Menu","Bills"],
+datasets:[{
+label:"Hotel Analytics",
+data:[rooms.length,menus.length,bills.length]
+}]
+}
+});
+
+},300);
+
 }
