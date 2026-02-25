@@ -234,3 +234,88 @@ saveDatabase();
 loadBookings();
 
 }
+function loadRestaurantMenu(){
+
+let content=document.getElementById("dashboardContent");
+
+content.innerHTML=`
+
+<h2>🍽 Restaurant Menu</h2>
+
+<div class="card">
+
+<input id="menuName" placeholder="Food Name"
+style="width:100%;padding:10px;margin:5px 0">
+
+<input id="menuPrice" placeholder="Price" type="number"
+style="width:100%;padding:10px;margin:5px 0">
+
+<input id="menuPhoto" type="file" accept="image/*">
+
+<button onclick="addMenu()"
+style="background:#22c55e;color:white;width:100%">
+Add Menu
+</button>
+
+</div>
+
+<h3>Menu List</h3>
+
+<div id="menuList"></div>
+
+`;
+
+loadMenus();
+
+}
+function addMenu(){
+
+let name=document.getElementById("menuName").value;
+let price=document.getElementById("menuPrice").value;
+let photo=document.getElementById("menuPhoto").files[0];
+
+let reader=new FileReader();
+
+reader.onload=function(){
+
+menus.push({
+id:Date.now(),
+name,
+price,
+photo:reader.result
+});
+
+saveDatabase();
+loadMenus();
+
+}
+
+if(photo) reader.readAsDataURL(photo);
+
+}
+function loadMenus(){
+
+let list=document.getElementById("menuList");
+if(!list) return;
+
+list.innerHTML="";
+
+menus.forEach(m=>{
+
+list.innerHTML+=`
+
+<div class="card" style="margin:10px">
+
+${m.photo?`<img src="${m.photo}"
+style="width:100%;height:120px;object-fit:cover;border-radius:10px">`:``}
+
+<h3>${m.name}</h3>
+💰 ${m.price}
+
+</div>
+
+`;
+
+});
+
+}
