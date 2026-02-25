@@ -90,8 +90,7 @@ Logout
 </div>
 `;
 }
-
-/* ---------- ROOM ---------- */
+/* ---------- ROOM SYSTEM PRO ---------- */
 
 let rooms = JSON.parse(localStorage.getItem("rooms")||"[]");
 
@@ -105,14 +104,17 @@ document.getElementById("content").innerHTML=`
 
 <h2>Room Management</h2>
 
-<input id="roomType" placeholder="Room Type">
-<input id="roomPrice" placeholder="Price" type="number">
+<input id="roomType" placeholder="Room Type"><br>
+<input id="roomPrice" placeholder="Price" type="number"><br>
 
-<button onclick="addRoom()" style="background:#22c55e;color:white">
+<input id="roomPhoto" type="file" accept="image/*"><br>
+
+<button onclick="addRoom()"
+style="background:#22c55e;color:white">
 Add Room
 </button>
 
-<div id="roomList"></div>
+<div id="roomList" style="display:flex;flex-wrap:wrap"></div>
 
 `;
 
@@ -123,21 +125,45 @@ function addRoom(){
 
 let type=document.getElementById("roomType").value;
 let price=document.getElementById("roomPrice").value;
+let photoInput=document.getElementById("roomPhoto");
 
 if(!type || !price){
 alert("Fill data");
 return;
 }
 
+let reader=new FileReader();
+
+reader.onload=function(e){
+
 rooms.push({
 id:Date.now(),
 type,
 price,
+photo:e.target.result,
 status:"Available"
 });
 
 saveRooms();
 loadRooms();
+};
+
+if(photoInput.files[0]){
+reader.readAsDataURL(photoInput.files[0]);
+}else{
+
+rooms.push({
+id:Date.now(),
+type,
+price,
+photo:"",
+status:"Available"
+});
+
+saveRooms();
+loadRooms();
+}
+
 }
 
 function loadRooms(){
@@ -150,23 +176,33 @@ rooms = JSON.parse(localStorage.getItem("rooms")||"[]");
 list.innerHTML="";
 
 rooms.forEach(r=>{
-list.innerHTML+=`
-<div style="background:white;color:black;padding:10px;margin:10px;width:220px">
 
-${r.type}<br>
+list.innerHTML+=`
+<div style="background:white;color:black;padding:10px;margin:10px;width:220px;border-radius:8px">
+
+${r.photo?`
+<img src="${r.photo}" style="width:100%;height:120px;object-fit:cover;border-radius:6px">
+`: ""}
+
+<h4>${r.type}</h4>
 Price: ${r.price}<br>
 Status: ${r.status}
 
-<button onclick="toggleRoom(${r.id})" style="background:blue;color:white">
+<br>
+
+<button onclick="toggleRoom(${r.id})"
+style="background:blue;color:white">
 Toggle
 </button>
 
-<button onclick="deleteRoom(${r.id})" style="background:red;color:white">
+<button onclick="deleteRoom(${r.id})"
+style="background:red;color:white">
 Delete
 </button>
 
 </div>
 `;
+
 });
 
 }
@@ -175,7 +211,7 @@ function toggleRoom(id){
 
 rooms=rooms.map(r=>{
 if(r.id===id){
-r.status=r.status==="Available"?"Booked":"Available";
+r.status = r.status==="Available"?"Booked":"Available";
 }
 return r;
 });
@@ -187,26 +223,10 @@ loadRooms();
 function deleteRoom(id){
 
 rooms=rooms.filter(r=>r.id!==id);
+
 saveRooms();
 loadRooms();
-}
-
-function logout(){
-localStorage.clear();
-loadLogin();
-}
-
-/* ---------- START ---------- */
-
-window.onload=function(){
-if(localStorage.getItem("login")==="ok"){
-loadDashboard();
-}else{
-loadLogin();
-}
-};
-
-</script>
+  }
 
 </body>
 </html>
