@@ -7,3 +7,11 @@ localStorage.setItem("rooms",JSON.stringify(rooms));
 localStorage.setItem("bills",JSON.stringify(bills));
 localStorage.setItem("menus",JSON.stringify(menus));
 }
+let bookings = JSON.parse(localStorage.getItem("bookings")||"[]");
+
+function saveAll(){
+localStorage.setItem("rooms",JSON.stringify(rooms));
+localStorage.setItem("menus",JSON.stringify(menus));
+localStorage.setItem("bills",JSON.stringify(bills));
+localStorage.setItem("bookings",JSON.stringify(bookings));
+}
