@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>Hotel ERP</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 body{
@@ -12,13 +12,20 @@ background:#0f172a;
 color:white;
 }
 
-input,button{
+button{
 padding:10px;
 margin:5px;
 width:200px;
+cursor:pointer;
 }
-</style>
 
+input{
+padding:8px;
+margin:5px;
+width:200px;
+}
+
+</style>
 </head>
 
 <body>
@@ -26,16 +33,15 @@ width:200px;
 <div id="app"></div>
 
 <script>
-let app = document.getElementById("app");
 
-/* ---------- LOGIN ---------- */
+/* ================= LOGIN ================= */
 
 function loadLogin(){
 
-app.innerHTML=`
+document.getElementById("app").innerHTML=`
 <div style="height:100vh;display:flex;justify-content:center;align-items:center">
 
-<div style="background:white;color:black;padding:30px;border-radius:10px">
+<div style="background:white;color:black;padding:30px;border-radius:10px;text-align:center">
 
 <h2>Hotel ERP Login</h2>
 
@@ -62,14 +68,14 @@ loadDashboard();
 }else{
 alert("Wrong login");
 }
-
 }
 
-/* ---------- DASHBOARD ---------- */
+/* ================= DASHBOARD ================= */
 
 function loadDashboard(){
 
-app.innerHTML=`
+document.getElementById("app").innerHTML=`
+
 <div style="display:flex;height:100vh">
 
 <div style="width:250px;background:#020617;padding:20px">
@@ -77,20 +83,23 @@ app.innerHTML=`
 <h2>Hotel ERP</h2>
 
 <button onclick="loadRoomPage()">Room Management</button>
+
 <button onclick="logout()" style="background:red;color:white">
 Logout
 </button>
 
 </div>
 
-<div id="content" style="flex:1;padding:30px">
+<div id="content" style="flex:1;padding:30px;background:#0f172a">
 <h2>Dashboard Working ✅</h2>
 </div>
 
 </div>
 `;
+
 }
-/* ---------- ROOM SYSTEM PRO ---------- */
+
+/* ================= ROOM SYSTEM ================= */
 
 let rooms = JSON.parse(localStorage.getItem("rooms")||"[]");
 
@@ -109,12 +118,11 @@ document.getElementById("content").innerHTML=`
 
 <input id="roomPhoto" type="file" accept="image/*"><br>
 
-<button onclick="addRoom()"
-style="background:#22c55e;color:white">
+<button onclick="addRoom()" style="background:#22c55e;color:white">
 Add Room
 </button>
 
-<div id="roomList" style="display:flex;flex-wrap:wrap"></div>
+<div id="roomList"></div>
 
 `;
 
@@ -125,45 +133,22 @@ function addRoom(){
 
 let type=document.getElementById("roomType").value;
 let price=document.getElementById("roomPrice").value;
-let photoInput=document.getElementById("roomPhoto");
 
 if(!type || !price){
 alert("Fill data");
 return;
 }
 
-let reader=new FileReader();
-
-reader.onload=function(e){
-
 rooms.push({
 id:Date.now(),
 type,
 price,
-photo:e.target.result,
-status:"Available"
+status:"Available",
+photo:""
 });
 
 saveRooms();
 loadRooms();
-};
-
-if(photoInput.files[0]){
-reader.readAsDataURL(photoInput.files[0]);
-}else{
-
-rooms.push({
-id:Date.now(),
-type,
-price,
-photo:"",
-status:"Available"
-});
-
-saveRooms();
-loadRooms();
-}
-
 }
 
 function loadRooms(){
@@ -178,11 +163,7 @@ list.innerHTML="";
 rooms.forEach(r=>{
 
 list.innerHTML+=`
-<div style="background:white;color:black;padding:10px;margin:10px;width:220px;border-radius:8px">
-
-${r.photo?`
-<img src="${r.photo}" style="width:100%;height:120px;object-fit:cover;border-radius:6px">
-`: ""}
+<div style="background:white;color:black;padding:10px;margin:10px;width:220px">
 
 <h4>${r.type}</h4>
 Price: ${r.price}<br>
@@ -190,13 +171,11 @@ Status: ${r.status}
 
 <br>
 
-<button onclick="toggleRoom(${r.id})"
-style="background:blue;color:white">
+<button onclick="toggleRoom(${r.id})" style="background:blue;color:white">
 Toggle
 </button>
 
-<button onclick="deleteRoom(${r.id})"
-style="background:red;color:white">
+<button onclick="deleteRoom(${r.id})" style="background:red;color:white">
 Delete
 </button>
 
@@ -211,7 +190,7 @@ function toggleRoom(id){
 
 rooms=rooms.map(r=>{
 if(r.id===id){
-r.status = r.status==="Available"?"Booked":"Available";
+r.status=r.status==="Available"?"Booked":"Available";
 }
 return r;
 });
@@ -226,7 +205,26 @@ rooms=rooms.filter(r=>r.id!==id);
 
 saveRooms();
 loadRooms();
-  }
+}
+
+/* ================= LOGOUT ================= */
+
+function logout(){
+localStorage.clear();
+loadLogin();
+}
+
+/* ================= START ================= */
+
+window.onload=function(){
+if(localStorage.getItem("login")==="ok"){
+loadDashboard();
+}else{
+loadLogin();
+}
+};
+
+</script>
 
 </body>
 </html>
