@@ -50,3 +50,6 @@ gap:20px">
 </div>
 `;
 }
+<button onclick="loadBookingSystem()" style="width:100%;padding:12px;margin:5px 0">
+📅 Booking System
+</button>
