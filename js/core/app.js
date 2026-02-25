@@ -211,3 +211,126 @@ Create User
 </div>
 `;
 }
+function loadBookingSystem(){
+
+let content=document.getElementById("dashboardContent");
+
+content.innerHTML=`
+<h2>📅 Room Booking System</h2>
+
+<div class="card" style="max-width:500px">
+
+<input id="customerName" placeholder="Customer Name" style="width:100%;padding:10px;margin:5px 0">
+
+<select id="bookingRoom" style="width:100%;padding:10px;margin:5px 0">
+<option value="">Select Room</option>
+</select>
+
+<input id="bookingDays" type="number" placeholder="Number of Days"
+style="width:100%;padding:10px;margin:5px 0">
+
+<button onclick="createBooking()" style="width:100%;padding:12px;background:#22c55e;color:white;border:none">
+Book Room
+</button>
+
+</div>
+
+<h3>Booking List</h3>
+
+<div id="bookingList"></div>
+`;
+
+loadBookingRooms();
+loadBookings();
+
+}
+function loadBookingRooms(){
+
+let select=document.getElementById("bookingRoom");
+if(!select) return;
+
+select.innerHTML=`<option value="">Select Room</option>`;
+
+rooms.forEach(r=>{
+select.innerHTML+=`
+<option value="${r.id}">
+${r.type} - ${r.price}
+</option>
+`;
+});
+
+}
+function createBooking(){
+
+let name=document.getElementById("customerName").value;
+let roomId=document.getElementById("bookingRoom").value;
+let days=document.getElementById("bookingDays").value;
+
+if(!name || !roomId || !days){
+alert("Fill booking data");
+return;
+}
+
+/* Availability Check */
+
+let exists=bookings.find(b=>b.roomId===roomId);
+
+if(exists){
+alert("Room already booked!");
+return;
+}
+
+let room=rooms.find(r=>r.id==roomId);
+
+let total=parseInt(room.price)*parseInt(days);
+
+bookings.push({
+id:Date.now(),
+customer:name,
+roomId,
+days,
+total
+});
+
+saveAll();
+loadBookings();
+
+}
+function loadBookings(){
+
+let list=document.getElementById("bookingList");
+if(!list) return;
+
+list.innerHTML="";
+
+bookings.forEach(b=>{
+
+let room=rooms.find(r=>r.id==b.roomId)||{type:"Unknown"};
+
+list.innerHTML+=`
+<div class="card" style="margin:10px">
+
+👤 ${b.customer}<br>
+🏨 ${room.type}<br>
+📅 Days: ${b.days}<br>
+💰 Total: ${b.total}
+
+<button onclick="deleteBooking(${b.id})"
+style="background:red;color:white;border:none;padding:6px;float:right">
+Delete
+</button>
+
+</div>
+`;
+
+});
+
+}
+function deleteBooking(id){
+
+bookings=bookings.filter(b=>b.id!==id);
+
+saveAll();
+loadBookings();
+
+}
