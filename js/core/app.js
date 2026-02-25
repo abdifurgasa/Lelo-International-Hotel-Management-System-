@@ -1,8 +1,20 @@
 window.onload = function () {
-    checkLogin();
+    startSystem();
 };
 
-let rooms = [];
+function startSystem(){
+    try{
+        checkLogin();
+    }catch(error){
+        console.log("System Error:", error);
+        localStorage.clear();
+        loadLogin();
+    }
+}
+
+/* ============================= */
+/* ROOM MANAGEMENT SYSTEM */
+/* ============================= */
 
 function loadRoomManagement(){
 
@@ -48,6 +60,7 @@ type,
 price
 });
 
+saveRooms();
 loadRooms();
 }
 
@@ -56,12 +69,14 @@ function loadRooms(){
 let list = document.getElementById("roomList");
 if(!list) return;
 
+rooms = JSON.parse(localStorage.getItem("rooms") || "[]");
+
 list.innerHTML = "";
 
 rooms.forEach(r => {
 
 list.innerHTML += `
-<div style="background:#f1f1f1;color:black;padding:10px;margin:5px;width:200px">
+<div style="background:#f1f1f1;color:black;padding:10px;margin:5px;width:200px;border-radius:5px">
 Room: ${r.type} <br>
 Price: ${r.price}
 </div>
