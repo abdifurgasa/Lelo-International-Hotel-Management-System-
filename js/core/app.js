@@ -1,7 +1,3 @@
-window.onload=function(){
-startERP();
+window.onload = function () {
+    checkLogin();
 };
-
-function startERP(){
-checkLogin();
-}
