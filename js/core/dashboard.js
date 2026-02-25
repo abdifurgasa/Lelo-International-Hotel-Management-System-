@@ -7,7 +7,7 @@ function loadDashboard() {
         font-family:Arial;">
 
             <div style="
-                max-width:800px;
+                max-width:900px;
                 margin:auto;
                 background:rgba(255,255,255,0.1);
                 backdrop-filter:blur(10px);
@@ -17,18 +17,16 @@ function loadDashboard() {
                 text-align:center;
             ">
 
-                <h1 style="margin-bottom:30px;">
-                    🏨 Lelo International Hotel Dashboard
-                </h1>
+                <h1>🏨 Hotel Management System</h1>
 
-                <p style="font-size:18px;margin-bottom:30px;">
-                    Welcome to your smart hotel management system
-                </p>
-
-                <div style="display:grid;gap:15px;">
+                <div style="display:grid;gap:15px;margin-top:30px;">
 
                     <button onclick="loadRooms()" style="padding:15px;border:none;border-radius:15px;font-size:16px;cursor:pointer;">
                         Manage Rooms
+                    </button>
+
+                    <button onclick="loadFinance()" style="padding:15px;border:none;border-radius:15px;font-size:16px;cursor:pointer;">
+                        Finance System
                     </button>
 
                     <button onclick="loadLogin()" style="padding:15px;border:none;border-radius:15px;font-size:16px;cursor:pointer;">
@@ -39,12 +37,12 @@ function loadDashboard() {
 
                 <div id="content" style="
                     margin-top:40px;
-                    text-align:left;
                     background:white;
                     color:black;
                     padding:25px;
                     border-radius:20px;
-                    min-height:200px;
+                    text-align:left;
+                    min-height:250px;
                 ">
                 </div>
 
@@ -53,139 +51,77 @@ function loadDashboard() {
     `;
 }
 
-function loadRooms() {
+/* ===============================
+   FINANCE SYSTEM
+================================*/
+
+function getFinance() {
+    return JSON.parse(localStorage.getItem("finance")) || [];
+}
+
+function saveFinance(data) {
+    localStorage.setItem("finance", JSON.stringify(data));
+}
+
+function loadFinance() {
     document.getElementById("content").innerHTML = `
-        <h2>Room Management</h2>
+        <h2>Finance Billing</h2>
 
-        <input id="roomNumber" placeholder="Room Number"/>
+        <input id="billName" placeholder="Bill Name"/>
+        <input id="billAmount" placeholder="Amount"/>
 
-        <select id="roomType" onchange="setAutoPrice()">
-            <option value="">Select Room Type</option>
-            <option value="Single">Single</option>
-            <option value="Double">Double</option>
-            <option value="Deluxe">Deluxe</option>
-            <option value="Smart">Smart</option>
-            <option value="VIP">VIP</option>
-        </select>
-
-        <input id="roomPrice" placeholder="Price" readonly/>
-
-        <input type="file" id="roomPhoto" accept="image/*"/>
-
-        <button onclick="addRoom()">Add Room</button>
+        <button onclick="addFinance()">Add Payment</button>
 
         <hr/>
 
-        <div id="roomList"></div>
+        <div id="financeList"></div>
     `;
 
-    displayRooms();
+    displayFinance();
 }
 
-function setAutoPrice() {
-    const type = document.getElementById("roomType").value;
+function addFinance() {
+    const name = document.getElementById("billName").value;
+    const amount = document.getElementById("billAmount").value;
 
-    const prices = {
-        Single: 80,
-        Double: 120,
-        Deluxe: 180,
-        Smart: 200,
-        VIP: 300
-    };
-
-    document.getElementById("roomPrice").value = prices[type] || "";
-}
-
-function addRoom() {
-    const number = document.getElementById("roomNumber").value;
-    const type = document.getElementById("roomType").value;
-    const price = document.getElementById("roomPrice").value;
-    const photoFile = document.getElementById("roomPhoto").files[0];
-
-    if (!number || !type || !price || !photoFile) {
-        alert("Fill all fields including photo");
+    if (!name || !amount) {
+        alert("Fill finance fields");
         return;
     }
 
-    const reader = new FileReader();
+    const finance = getFinance();
 
-    reader.onload = function () {
-        const rooms = getRooms();
+    finance.push({
+        name,
+        amount,
+        date: new Date().toLocaleString()
+    });
 
-        rooms.push({
-            number,
-            type,
-            price,
-            photo: reader.result,
-            status: "Available"
-        });
-
-        saveRooms(rooms);
-        displayRooms();
-    };
-
-    reader.readAsDataURL(photoFile);
+    saveFinance(finance);
+    displayFinance();
 }
 
-function displayRooms() {
-    const rooms = getRooms();
-    const roomList = document.getElementById("roomList");
+function displayFinance() {
+    const list = document.getElementById("financeList");
+    if (!list) return;
 
-    if (!roomList) return;
+    const finance = getFinance();
 
-    if (!rooms.length) {
-        roomList.innerHTML = "No rooms added yet.";
+    if (!finance.length) {
+        list.innerHTML = "No finance records";
         return;
     }
 
-    roomList.innerHTML = rooms.map((room, index) => `
-        <div style="background:#f9f9f9;
-        color:black;
-        padding:15px;
-        margin:10px 0;
-        border-radius:15px;
-        box-shadow:0 0 5px rgba(0,0,0,0.1);">
+    list.innerHTML = finance.map(item => `
+        <div style="background:#f5f5f5;
+        padding:10px;
+        margin:8px 0;
+        border-radius:10px;">
 
-            <img src="${room.photo}"
-            style="width:120px;height:80px;object-fit:cover;border-radius:10px;"/>
-
-            <p>
-                Room ${room.number} |
-                ${room.type} |
-                $${room.price} |
-                <strong>${room.status}</strong>
-            </p>
-
-            <button onclick="toggleStatus(${index})">
-                Toggle Status
-            </button>
-
-            <button onclick="deleteRoom(${index})"
-            style="background:red;color:white;margin-left:10px;">
-                Delete
-            </button>
+            ${item.name} |
+            $${item.amount} |
+            ${item.date}
 
         </div>
     `).join("");
-}
-
-function toggleStatus(index) {
-    const rooms = getRooms();
-
-    rooms[index].status =
-        rooms[index].status === "Available"
-            ? "Occupied"
-            : "Available";
-
-    saveRooms(rooms);
-    displayRooms();
-}
-
-function deleteRoom(index) {
-    const rooms = getRooms();
-
-    rooms.splice(index, 1);
-
-    saveRooms(rooms);
-    displayRooms();
 }
