@@ -1,8 +1,8 @@
 let rooms=[];
 let menus=[];
 let bills=[];
-let users=[];
 let bookings=[];
+let users=[];
 
 function loadDatabase(){
 
