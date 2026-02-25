@@ -1,9 +1,9 @@
 function loadLogin(){
 
 document.getElementById("app").innerHTML = `
-<div style="height:100vh;display:flex;justify-content:center;align-items:center;background:#0f172a">
+<div style="height:100vh;display:flex;justify-content:center;align-items:center">
 
-<div style="background:white;padding:30px;border-radius:10px;width:300px;text-align:center;color:black">
+<div class="card" style="width:300px;text-align:center">
 
 <h2>Hotel ERP Login</h2>
 
@@ -13,8 +13,7 @@ style="width:100%;padding:10px;margin:10px 0">
 <input id="password" type="password" placeholder="Password"
 style="width:100%;padding:10px;margin:10px 0">
 
-<button onclick="login()"
-style="width:100%;padding:10px;background:#22c55e;color:white;border:none">
+<button onclick="login()" style="background:#22c55e;color:white">
 Login
 </button>
 
