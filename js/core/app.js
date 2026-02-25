@@ -1,5 +1,8 @@
 window.onload=function(){
 checkLogin();
+};
+window.onload=function(){
+checkLogin();
 }
 
 function loadRoomManagement(){
