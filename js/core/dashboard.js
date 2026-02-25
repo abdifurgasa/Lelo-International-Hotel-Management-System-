@@ -10,6 +10,7 @@ function loadDashboard() {
         </div>
     `;
 }
+
 function loadRooms() {
     const content = document.getElementById("content");
     const rooms = getRooms();
@@ -18,8 +19,18 @@ function loadRooms() {
         <h2>Room Management</h2>
 
         <input id="roomNumber" placeholder="Room Number" />
-        <input id="roomType" placeholder="Room Type" />
+
+        <select id="roomType">
+            <option value="">Select Room Type</option>
+            <option value="Single">Single</option>
+            <option value="Double">Double</option>
+            <option value="Deluxe">Deluxe</option>
+            <option value="Smart">Smart</option>
+            <option value="VIP">VIP</option>
+        </select>
+
         <input id="roomPrice" placeholder="Price" />
+
         <button onclick="addRoom()">Add Room</button>
 
         <hr/>
@@ -41,6 +52,7 @@ function addRoom() {
     }
 
     const rooms = getRooms();
+
     rooms.push({
         number,
         type,
@@ -55,6 +67,11 @@ function addRoom() {
 function displayRooms() {
     const rooms = getRooms();
     const roomList = document.getElementById("roomList");
+
+    if (rooms.length === 0) {
+        roomList.innerHTML = "No rooms added yet.";
+        return;
+    }
 
     roomList.innerHTML = rooms.map(room => `
         <div style="background:white;color:black;padding:10px;margin:5px 0;">
