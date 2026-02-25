@@ -1,7 +1,7 @@
 function loadLogin(){
 
 document.getElementById("app").innerHTML = `
-<div style="height:100vh;display:flex;justify-content:center;align-items:center">
+<div style="height:100vh;display:flex;justify-content:center;align-items:center;background:#0f172a">
 
 <div class="card" style="width:300px;text-align:center">
 
@@ -24,10 +24,10 @@ Login
 
 function login(){
 
-let u = document.getElementById("username").value;
-let p = document.getElementById("password").value;
+let u=document.getElementById("username").value;
+let p=document.getElementById("password").value;
 
-if(u === "admin" && p === "1234"){
+if(u==="admin" && p==="1234"){
 localStorage.setItem("login","ok");
 loadDashboard();
 }else{
@@ -38,7 +38,7 @@ alert("Wrong login");
 
 function checkLogin(){
 
-if(localStorage.getItem("login") === "ok"){
+if(localStorage.getItem("login")==="ok"){
 loadDashboard();
 }else{
 loadLogin();
@@ -47,6 +47,6 @@ loadLogin();
 }
 
 function logout(){
-localStorage.removeItem("login");
+localStorage.clear();
 loadLogin();
 }
