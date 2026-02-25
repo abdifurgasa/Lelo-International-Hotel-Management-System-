@@ -79,7 +79,7 @@ function addRoom() {
         });
 
         saveRooms(rooms);
-        loadRooms();
+        displayRooms();
     };
 
     reader.readAsDataURL(photoFile);
@@ -88,6 +88,8 @@ function addRoom() {
 function displayRooms() {
     const rooms = getRooms();
     const roomList = document.getElementById("roomList");
+
+    if (!roomList) return;
 
     if (!rooms.length) {
         roomList.innerHTML = "No rooms added yet.";
@@ -123,12 +125,14 @@ function toggleStatus(index) {
             : "Available";
 
     saveRooms(rooms);
-    loadRooms();
+    displayRooms();
 }
 
 function deleteRoom(index) {
     const rooms = getRooms();
+
     rooms.splice(index, 1);
+
     saveRooms(rooms);
-    loadRooms();
+    displayRooms();
 }
