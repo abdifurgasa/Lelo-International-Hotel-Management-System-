@@ -13,14 +13,13 @@ function loadDashboard() {
 
 function loadRooms() {
     const content = document.getElementById("content");
-    const rooms = getRooms();
 
     content.innerHTML = `
         <h2>Room Management</h2>
 
         <input id="roomNumber" placeholder="Room Number" />
 
-        <select id="roomType">
+        <select id="roomType" onchange="setAutoPrice()">
             <option value="">Select Room Type</option>
             <option value="Single">Single</option>
             <option value="Double">Double</option>
@@ -29,7 +28,7 @@ function loadRooms() {
             <option value="VIP">VIP</option>
         </select>
 
-        <input id="roomPrice" placeholder="Price" />
+        <input id="roomPrice" placeholder="Price" readonly />
 
         <button onclick="addRoom()">Add Room</button>
 
@@ -39,6 +38,21 @@ function loadRooms() {
     `;
 
     displayRooms();
+}
+
+function setAutoPrice() {
+    const type = document.getElementById("roomType").value;
+    const priceInput = document.getElementById("roomPrice");
+
+    const prices = {
+        Single: 80,
+        Double: 120,
+        Deluxe: 180,
+        Smart: 200,
+        VIP: 300
+    };
+
+    priceInput.value = prices[type] || "";
 }
 
 function addRoom() {
@@ -73,9 +87,5 @@ function displayRooms() {
         return;
     }
 
-    roomList.innerHTML = rooms.map(room => `
+    roomList.innerHTML = rooms.map((room, index) => `
         <div style="background:white;color:black;padding:10px;margin:5px 0;">
-            Room ${room.number} | ${room.type} | $${room.price} | ${room.status}
-        </div>
-    `).join("");
-}
