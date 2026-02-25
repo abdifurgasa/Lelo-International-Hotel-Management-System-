@@ -1,37 +1,49 @@
-function loadDashboard(){
+function loadLogin(){
 
 document.getElementById("app").innerHTML=`
+<div style="height:100vh;display:flex;justify-content:center;align-items:center">
 
-<div style="display:flex;height:100vh;background:#0f172a;color:white">
+<div class="card" style="width:300px;text-align:center">
 
-<!-- Sidebar -->
-<div style="width:250px;background:#020617;padding:20px">
+<h2>Hotel ERP Login</h2>
 
-<h2>🏨 Hotel ERP</h2>
+<input id="username" placeholder="Username"
+style="width:100%;padding:10px;margin:10px 0">
 
-<button onclick="loadRoomManagement()">Room Management</button>
-<button onclick="loadBookingSystem()">Booking System</button>
-<button onclick="loadRestaurantMenu()">Restaurant</button>
-<button onclick="loadFinance()">Finance</button>
-<button onclick="loadUserManagement()">User Creation</button>
+<input id="password" type="password" placeholder="Password"
+style="width:100%;padding:10px;margin:10px 0">
 
-<button onclick="logout()"
-style="background:red;color:white;margin-top:20px">
-Logout
+<button onclick="login()" style="background:#22c55e;color:white">
+Login
 </button>
 
 </div>
-
-<!-- Content -->
-<div id="dashboardContent"
-style="flex:1;padding:30px;overflow:auto;background:#0f172a">
-
-<h2>🏨 Welcome Hotel ERP System</h2>
-
 </div>
-
-</div>
-
 `;
+}
 
+function login(){
+
+let u=document.getElementById("username").value;
+let p=document.getElementById("password").value;
+
+if(u==="admin" && p==="1234"){
+localStorage.setItem("login","ok");
+loadDashboard();
+}else{
+alert("Wrong login");
+}
+}
+
+function checkLogin(){
+if(localStorage.getItem("login")==="ok"){
+loadDashboard();
+}else{
+loadLogin();
+}
+}
+
+function logout(){
+localStorage.clear();
+loadLogin();
 }
