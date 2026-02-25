@@ -1,12 +1,54 @@
 function loadDashboard() {
     document.getElementById("app").innerHTML = `
-        <div style="min-height:100vh;background:linear-gradient(135deg,green,purple);color:white;padding:20px;padding-bottom:50px;">
-            <h1>Lelo International Hotel Management System</h1>
+        <div style="min-height:100vh;
+        background:linear-gradient(135deg,#0f9b0f,#6a0dad);
+        padding:40px;
+        color:white;
+        font-family:Arial;">
 
-            <button onclick="loadRooms()" style="padding:10px;margin-right:10px;">Manage Rooms</button>
-            <button onclick="loadLogin()" style="padding:10px;">Logout</button>
+            <div style="
+                max-width:800px;
+                margin:auto;
+                background:rgba(255,255,255,0.1);
+                backdrop-filter:blur(10px);
+                border-radius:25px;
+                padding:40px;
+                box-shadow:0 0 25px rgba(0,0,0,0.3);
+                text-align:center;
+            ">
 
-            <div id="content" style="margin-top:20px;"></div>
+                <h1 style="margin-bottom:30px;">
+                    🏨 Lelo International Hotel Dashboard
+                </h1>
+
+                <p style="font-size:18px;margin-bottom:30px;">
+                    Welcome to your smart hotel management system
+                </p>
+
+                <div style="display:grid;gap:15px;">
+
+                    <button onclick="loadRooms()" style="padding:15px;border:none;border-radius:15px;font-size:16px;cursor:pointer;">
+                        Manage Rooms
+                    </button>
+
+                    <button onclick="loadLogin()" style="padding:15px;border:none;border-radius:15px;font-size:16px;cursor:pointer;">
+                        Logout
+                    </button>
+
+                </div>
+
+                <div id="content" style="
+                    margin-top:40px;
+                    text-align:left;
+                    background:white;
+                    color:black;
+                    padding:25px;
+                    border-radius:20px;
+                    min-height:200px;
+                ">
+                </div>
+
+            </div>
         </div>
     `;
 }
@@ -97,21 +139,32 @@ function displayRooms() {
     }
 
     roomList.innerHTML = rooms.map((room, index) => `
-        <div style="background:white;color:black;padding:15px;margin:10px 0;border-radius:10px;">
-            <img src="${room.photo}" style="width:120px;height:80px;object-fit:cover;display:block;margin-bottom:10px;"/>
+        <div style="background:#f9f9f9;
+        color:black;
+        padding:15px;
+        margin:10px 0;
+        border-radius:15px;
+        box-shadow:0 0 5px rgba(0,0,0,0.1);">
 
-            Room ${room.number} | ${room.type} | $${room.price} |
-            <strong>${room.status}</strong>
+            <img src="${room.photo}"
+            style="width:120px;height:80px;object-fit:cover;border-radius:10px;"/>
 
-            <br/>
+            <p>
+                Room ${room.number} |
+                ${room.type} |
+                $${room.price} |
+                <strong>${room.status}</strong>
+            </p>
 
             <button onclick="toggleStatus(${index})">
                 Toggle Status
             </button>
 
-            <button onclick="deleteRoom(${index})" style="background:red;color:white;margin-left:10px;">
+            <button onclick="deleteRoom(${index})"
+            style="background:red;color:white;margin-left:10px;">
                 Delete
             </button>
+
         </div>
     `).join("");
 }
