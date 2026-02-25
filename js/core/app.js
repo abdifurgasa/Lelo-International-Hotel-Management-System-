@@ -168,11 +168,26 @@ alert("Fill booking data");
 return;
 }
 
+let room=rooms.find(r=>r.id==roomId);
+
+let total=parseInt(room.price)*parseInt(days);
+
+/* Booking Record */
+
 bookings.push({
 id:Date.now(),
 customer:name,
 roomId,
-days
+days,
+total
+});
+
+/* Auto Billing */
+
+bills.push({
+id:Date.now()+1,
+customer:name,
+amount:total
 });
 
 saveDatabase();
