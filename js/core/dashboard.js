@@ -27,3 +27,6 @@ document.getElementById("app").innerHTML=`
 `;
 
 }
+<button onclick="loadRestaurantMenu()">
+🍽 Restaurant Order
+</button>
