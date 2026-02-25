@@ -1,75 +1,30 @@
 function loadDashboard(){
-    const app = document.getElementById("app");
 
-    if(!app){
-        console.error("App container not found");
-        return;
-    }
+const app=document.getElementById("app");
 
-    app.innerHTML = `
-    <div style="
-        min-height:100vh;
-        background: linear-gradient(135deg,#6a11cb,#2575fc,#2ecc71);
-        padding:20px;
-        font-family: Arial, sans-serif;
-        color:white;
-    ">
+app.innerHTML=`
+<div style="min-height:100vh;
+background:linear-gradient(135deg,#6a11cb,#2575fc,#2ecc71);
+color:white;padding:20px">
 
-        <h2 style="text-align:center;margin-bottom:30px;">
-            🏨 Hotel Management Dashboard
-        </h2>
+<h2 style="text-align:center">🏨 Hotel Dashboard</h2>
 
-        <div style="
-            display:grid;
-            grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-            gap:20px;
-        ">
+<div style="text-align:center;margin-bottom:20px">
 
-            <div style="
-                background:rgba(255,255,255,0.15);
-                padding:25px;
-                border-radius:20px;
-                backdrop-filter: blur(10px);
-                text-align:center;
-                font-size:18px;
-            ">
-                🛏️ Room Management
-            </div>
+<button onclick="loadRoomManagement()" style="padding:10px;margin:5px">
+Room Management
+</button>
 
-            <div style="
-                background:rgba(255,255,255,0.15);
-                padding:25px;
-                border-radius:20px;
-                backdrop-filter: blur(10px);
-                text-align:center;
-                font-size:18px;
-            ">
-                💰 Finance System
-            </div>
+<button onclick="loadFinance()" style="padding:10px;margin:5px">
+Finance
+</button>
 
-            <div style="
-                background:rgba(255,255,255,0.15);
-                padding:25px;
-                border-radius:20px;
-                backdrop-filter: blur(10px);
-                text-align:center;
-                font-size:18px;
-            ">
-                🍽️ Restaurant Order
-            </div>
+<button onclick="logout()" style="padding:10px;margin:5px;background:red;color:white">
+Logout
+</button>
 
-            <div style="
-                background:rgba(255,255,255,0.15);
-                padding:25px;
-                border-radius:20px;
-                backdrop-filter: blur(10px);
-                text-align:center;
-                font-size:18px;
-            ">
-                👤 User Management
-            </div>
+</div>
 
-        </div>
-    </div>
-    `;
+</div>
+`;
 }
