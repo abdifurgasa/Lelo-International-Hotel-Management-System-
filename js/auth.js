@@ -1,34 +1,65 @@
 import { auth } from "./firebase.js";
 
 import {
-signInWithEmailAndPassword
+signInWithEmailAndPassword,
+onAuthStateChanged,
+signOut
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 
-// Login Button Event
-document.getElementById("loginBtn").addEventListener("click", () => {
+const loginBtn = document.getElementById("loginBtn");
+
+if(loginBtn){
+
+loginBtn.onclick = ()=>{
 
 const email = document.getElementById("email").value;
 const password = document.getElementById("password").value;
 
-if(email === "" || password === ""){
-alert("Enter email and password");
-return;
-}
-
-
-// Firebase Login
 signInWithEmailAndPassword(auth,email,password)
 .then(()=>{
 
-// Redirect to dashboard
 window.location.href = "dashboard.html";
 
 })
-.catch((error)=>{
+.catch(e=>{
+alert("Login Failed: " + e.message);
+});
 
-alert("Login Failed: " + error.message);
+};
+
+}
+
+
+/* Auto protection */
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+if(window.location.pathname.includes("dashboard")){
+window.location.href = "index.html";
+}
+
+}
 
 });
 
+
+/* Logout */
+
+const logoutBtn = document.getElementById("logout");
+
+if(logoutBtn){
+
+logoutBtn.onclick=()=>{
+
+signOut(auth).then(()=>{
+
+window.location.href="index.html";
+
 });
+
+};
+
+}
