@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-<title>Lelo International Hotel Management System</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title data-lang="hotelName">Lelo International Hotel</title>
 
 <link rel="stylesheet" href="css/style.css">
 
@@ -13,19 +16,42 @@
 
 <div class="login-container">
 
-<h1>Lelo International Hotel</h1>
-<h3>Hotel Management System</h3>
+<h1 data-lang="hotelName">Lelo International Hotel</h1>
 
-<input type="email" id="email" placeholder="Enter Email">
+<h3 data-lang="loginTitle">Hotel Management System</h3>
 
-<input type="password" id="password" placeholder="Enter Password">
+<!-- Language Selector -->
+<select id="langSelect" style="width:100%; padding:8px; margin-bottom:15px;">
+<option value="en">English</option>
+<option value="am">አማርኛ</option>
+<option value="om">Afaan Oromoo</option>
+</select>
 
-<button id="loginBtn">Login</button>
+<input type="email" id="email" placeholder="Email" data-lang="email">
+
+<input type="password" id="password" placeholder="Password" data-lang="password">
+
+<button id="loginBtn" data-lang="login">Login</button>
 
 </div>
 
+<!-- Language System -->
+<script type="module">
+
+import { setLanguage } from "./js/lang/lang.js";
+
+/* Default Language */
+setLanguage("en");
+
+/* Language Change Event */
+document.getElementById("langSelect").addEventListener("change",(e)=>{
+setLanguage(e.target.value);
+});
+
+</script>
+
+<!-- Authentication Script -->
 <script type="module" src="js/auth.js"></script>
 
 </body>
-
 </html>
