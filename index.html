@@ -1,43 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-lang="hotelName">Lelo International Hotel</title>
 
-<title>Lelo International Hotel</title>
 <link rel="stylesheet" href="css/style.css">
-
 </head>
 
 <body>
 
 <div class="login-container">
 
-<h2 data-lang="hotelName"></h2>
+  <!-- Hotel Name -->
+  <h1 data-lang="hotelName"></h1>
 
-<select id="langSelect">
-<option value="en">English</option>
-<option value="am">አማርኛ</option>
-<option value="om">Afaan Oromoo</option>
-</select>
+  <!-- Login Title -->
+  <h3 data-lang="loginTitle"></h3>
 
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
+  <!-- Language Selector -->
+  <select id="langSelect" style="width: 100%; padding: 8px; margin-bottom: 15px;">
+    <option value="en">English</option>
+    <option value="am">አማርኛ</option>
+    <option value="om">Afaan Oromoo</option>
+  </select>
 
-<button id="loginBtn" data-lang="login"></button>
+  <!-- Login Form -->
+  <input type="email" id="email" placeholder="Email" data-lang="email">
+  <input type="password" id="password" placeholder="Password" data-lang="password">
+
+  <button id="loginBtn" data-lang="login"></button>
 
 </div>
 
+<!-- Language System -->
 <script type="module">
-
 import { setLanguage } from "./js/lang/lang.js";
 
+// Default language
 setLanguage("en");
 
-document.getElementById("langSelect").onchange=(e)=>{
-setLanguage(e.target.value);
-};
-
+// Change language dynamically
+document.getElementById("langSelect").addEventListener("change", (e) => {
+    setLanguage(e.target.value);
+});
 </script>
 
+<!-- Firebase Authentication -->
 <script type="module" src="js/auth.js"></script>
 
 </body>
