@@ -2,7 +2,7 @@ import { en } from "./en.js";
 import { am } from "./am.js";
 import { om } from "./om.js";
 
-const languages = { en, am };
+const languages = { en, am, om };
 
 export function setLanguage(lang){
 
@@ -10,7 +10,7 @@ const dict = languages[lang];
 
 document.querySelectorAll("[data-lang]").forEach(el=>{
 
-const key = el.getAttribute("data-lang");
+const key = el.dataset.lang;
 
 if(dict[key]){
 el.innerText = dict[key];
