@@ -1,1 +1,20 @@
+export const en = {
 
+hotelName: "Lelo International Hotel",
+
+loginTitle: "Hotel Management System",
+email: "Email",
+password: "Password",
+login: "Login",
+
+dashboard: "Dashboard",
+rooms: "Rooms",
+booking: "Booking",
+food: "Food",
+drink: "Drink",
+billing: "Billing",
+finance: "Finance",
+
+logout: "Logout"
+
+};
