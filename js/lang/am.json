@@ -1,1 +1,20 @@
+export const am = {
 
+hotelName: "ሌሎ ኢንተርናሽናል ሆቴል",
+
+loginTitle: "ሆቴል ስርዓት",
+email: "ኢሜይል",
+password: "የይለፍ ቃል",
+login: "ግባ",
+
+dashboard: "ዳሽቦርድ",
+rooms: "ክፍሎች",
+booking: "ቦኪንግ",
+food: "ምግብ",
+drink: "መጠጥ",
+billing: "ክፍያ",
+finance: "ፋይናንስ",
+
+logout: "ውጣ"
+
+};
