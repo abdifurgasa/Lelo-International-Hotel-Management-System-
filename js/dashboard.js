@@ -7,89 +7,68 @@ signOut
 
 import {
 collection,
-onSnapshot,
 query,
-where
+where,
+onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 import { Chart } from "https://cdn.jsdelivr.net/npm/chart.js";
 
 
-// ===============================
-// ENTERPRISE AUTH PROTECTION
-// ===============================
-
+// Login Protection
 onAuthStateChanged(auth,user=>{
-
 if(!user){
 window.location.href="index.html";
 }
-
 });
 
 
-// ===============================
-// REAL TIME ROOM ANALYTICS
-// ===============================
-
+// Rooms Count
 onSnapshot(collection(db,"rooms"), snapshot=>{
 document.getElementById("roomCount").innerText = snapshot.size;
 });
 
 
-// ===============================
-// FOOD ORDERS ANALYTICS
-// ===============================
+// Booking Count
+onSnapshot(collection(db,"bookings"), snapshot=>{
+document.getElementById("bookingCount").innerText = snapshot.size;
+});
 
-onSnapshot(
-query(collection(db,"orders"),where("type","==","food")),
-snapshot=>{
+
+// Food Orders
+onSnapshot(query(collection(db,"orders"),where("type","==","food")), snapshot=>{
 document.getElementById("foodCount").innerText = snapshot.size;
 });
 
 
-// ===============================
-// DRINK ORDERS ANALYTICS
-// ===============================
-
-onSnapshot(
-query(collection(db,"orders"),where("type","==","drink")),
-snapshot=>{
+// Drink Orders
+onSnapshot(query(collection(db,"orders"),where("type","==","drink")), snapshot=>{
 document.getElementById("drinkCount").innerText = snapshot.size;
 });
 
 
-// ===============================
-// ENTERPRISE REVENUE CALCULATION
-// ===============================
-
+// Billing Count
 onSnapshot(collection(db,"finance"), snapshot=>{
+document.getElementById("billingCount").innerText = snapshot.size;
 
-let totalRevenue = 0;
-
+let revenue=0;
 snapshot.forEach(doc=>{
-const data = doc.data();
-if(data.amount){
-totalRevenue += Number(data.amount);
-}
+let d=doc.data();
+if(d.amount) revenue+=Number(d.amount);
 });
 
-updateRevenueChart(totalRevenue);
+updateRevenueChart(revenue);
 
 });
 
 
-// ===============================
-// REVENUE CHART ENGINE
-// ===============================
-
+// Revenue Chart
 function updateRevenueChart(value){
 
-const revenueCanvas = document.getElementById("revenueChart");
+const canvas=document.getElementById("revenueChart");
+if(!canvas) return;
 
-if(!revenueCanvas) return;
-
-new Chart(revenueCanvas,{
+new Chart(canvas,{
 type:"doughnut",
 
 data:{
@@ -97,35 +76,27 @@ labels:["Revenue","Remaining"],
 
 datasets:[{
 data:[value,1000-value],
-
 backgroundColor:["#22c55e","#e5e7eb"]
 }]
 },
 
 options:{
-responsive:true,
 plugins:{
 legend:{display:false}
+},
+responsive:true
 }
+
 });
 
 }
 
 
-// ===============================
-// LOGOUT ENGINE
-// ===============================
-
-const logoutBtn = document.getElementById("logout");
-
-if(logoutBtn){
-
-logoutBtn.onclick=()=>{
+// Logout
+document.getElementById("logout").onclick=()=>{
 
 signOut(auth).then(()=>{
 window.location.href="index.html";
 });
 
 };
-
-}
