@@ -3,66 +3,91 @@
 
 <head>
 
-<title data-lang="dashboard">Dashboard</title>
+<title>Dashboard</title>
 
-<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/dashboard.css?v=2">
 
 </head>
 
 <body>
 
+<!-- Sidebar -->
 <div class="sidebar">
 
-<h2 data-lang="hotelName">Lelo Hotel</h2>
+<h2>Lelo Hotel</h2>
 
 <ul>
 
-<li data-lang="dashboard" onclick="loadPage('dashboard')"></li>
-<li data-lang="rooms"></li>
-<li data-lang="booking"></li>
-<li data-lang="food"></li>
-<li data-lang="drink"></li>
-<li data-lang="billing"></li>
-<li data-lang="finance"></li>
+<li onclick="loadPage('dashboard')">
+<span data-lang="dashboard">Dashboard</span>
+</li>
 
-<li id="logout" data-lang="logout"></li>
+<li>
+<span data-lang="rooms">Rooms</span>
+</li>
+
+<li>
+<span data-lang="booking">Booking</span>
+</li>
+
+<li>
+<span data-lang="food">Food</span>
+</li>
+
+<li>
+<span data-lang="drink">Drink</span>
+</li>
+
+<li>
+<span data-lang="billing">Billing</span>
+</li>
+
+<li>
+<span data-lang="finance">Finance</span>
+</li>
 
 </ul>
 
+<br>
+
+<button id="logout" data-lang="logout">Logout</button>
+
 </div>
 
+<!-- Main Dashboard -->
 <div class="main">
 
 <div class="topbar">
-<h2 data-lang="dashboard"></h2>
+<h2 data-lang="dashboard">Dashboard</h2>
 </div>
 
 <div class="cards">
 
 <div class="card">
-<h3 data-lang="rooms"></h3>
+<h3 data-lang="rooms">Rooms</h3>
 <p id="roomCount">0</p>
 </div>
 
 <div class="card">
-<h3 data-lang="booking"></h3>
+<h3 data-lang="booking">Booking</h3>
 <p id="bookingCount">0</p>
 </div>
 
 <div class="card">
-<h3 data-lang="finance"></h3>
+<h3 data-lang="finance">Revenue</h3>
 <p id="revenue">0</p>
 </div>
 
 </div>
+
+<br>
 
 <canvas id="chart"></canvas>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script type="module" src="js/dashboard.js"></script>
 
 </body>
-</html>
+  </html>
