@@ -16,6 +16,10 @@ loadStaff();
 if(page==="order"){
 loadOrders();
 }
+if(page==="order"){
+loadRoleOrders();
+}
+
 function logout(){
 
 let confirmLogout=confirm("Are you sure you want to logout?");
