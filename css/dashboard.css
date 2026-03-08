@@ -1,177 +1,136 @@
-/* ===============================
-LELO INTERNATIONAL HOTEL
-Blue Animated Glass Dashboard
-=============================== */
-
 body{
-margin:0;
+  margin:0;
+  font-family:"Times New Roman", Times, serif;
+  font-weight:bold;
 
-font-family:"Times New Roman", Times, serif;
-font-weight:bold;
+  /* ⭐ Luxury Blue-Green Gradient Background */
+  background: linear-gradient(
+    135deg,
+    #0f172a,
+    #0ea5e9,
+    #22c55e
+  );
 
-/* Blue Gradient Background */
-background: linear-gradient(
-135deg,
-#0ea5e9,
-#3b82f6,
-#1d4ed8
-);
+  background-size:400% 400%;
+  animation: bgMove 20s ease infinite;
 
-/* Animation */
-background-size:400% 400%;
-animation: bgMove 20s ease infinite;
-
-display:flex;
+  display:flex;
 }
 
-/* Background Animation */
+/* Smooth Gradient Animation */
 @keyframes bgMove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
 }
 
 /* =========================
-Transparent Glass Sidebar
+Sidebar (Solid Dark)
 ========================= */
-
 .sidebar{
-width:220px;
-height:100vh;
-
-/* Glass Transparency */
-background: rgba(255,255,255,0.1);
-
-backdrop-filter: blur(12px);
-
-color:white;
-
-padding:20px;
-box-sizing:border-box;
-
-border-right:1px solid rgba(255,255,255,0.2);
+  width:220px;
+  height:100vh;
+  background:#0f172a; /* Solid Dark */
+  color:white;
+  padding:20px;
+  box-sizing:border-box;
+  border-right:1px solid rgba(255,255,255,0.1);
 }
 
-/* Sidebar Menu Hover */
-
 .sidebar li{
-padding:12px;
-margin:6px 0;
-cursor:pointer;
-border-radius:6px;
-transition:0.3s;
-color:white;
+  padding:12px;
+  margin:6px 0;
+  cursor:pointer;
+  border-radius:6px;
+  transition:0.3s;
+  color:white;
 }
 
 .sidebar li:hover{
-background: rgba(255,255,255,0.2);
+  background:#1e3a8a; /* Hover effect blue */
 }
 
-/* Logout Style */
-
 #logout{
-color:#ffcccc;
+  color:#ffcccc;
 }
 
 /* =========================
-Main Dashboard Glass Panel
+Main Dashboard Panel (Glass)
 ========================= */
-
 .main{
-flex:1;
-padding:20px;
+  flex:1;
+  padding:20px;
 
-/* Transparent Glass Mode */
-background: rgba(255,255,255,0.08);
+  /* Glass effect */
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
 
-backdrop-filter: blur(15px);
-
-border-radius:20px;
-
-margin:20px;
+  border-radius:20px;
+  margin:20px;
 }
-
-/* Topbar */
 
 .topbar{
-padding:15px;
-
-color:white;
+  padding:15px;
+  color:white;
 }
 
-/* Statistic Cards */
-
+/* =========================
+Cards
+========================= */
 .cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:20px;
 }
 
 .card{
-
-background: rgba(255,255,255,0.15);
-
-backdrop-filter: blur(12px);
-
-color:white;
-
-padding:25px;
-
-border-radius:15px;
-
-text-align:center;
-
-transition:0.3s;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  color:white;
+  padding:25px;
+  border-radius:15px;
+  text-align:center;
+  transition:0.3s;
 }
-
-/* Card Hover */
 
 .card:hover{
-transform:translateY(-5px);
+  transform:translateY(-5px);
 }
 
-/* Chart */
-
+/* =========================
+Chart Panel
+========================= */
 canvas{
-width:100% !important;
-max-height:350px;
+  width:100% !important;
+  max-height:350px;
 
-background: rgba(255,255,255,0.15);
-
-backdrop-filter: blur(12px);
-
-padding:20px;
-
-border-radius:15px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  padding:20px;
+  border-radius:15px;
 }
 
-/* Responsive Tablet */
-
+/* =========================
+Responsive
+========================= */
 @media(max-width:900px){
-
-.sidebar{
-width:180px;
-}
-
+  .sidebar{
+    width:180px;
+  }
 }
 
 @media(max-width:600px){
-
-body{
-flex-direction:column;
-}
-
-.sidebar{
-width:100%;
-height:auto;
-}
-
-.main{
-margin:10px;
-}
-
-.cards{
-grid-template-columns:1fr;
-}
-
+  body{
+    flex-direction:column;
+  }
+  .sidebar{
+    width:100%;
+    height:auto;
+  }
+  .main{
+    margin:10px;
+  }
+  .cards{
+    grid-template-columns:1fr;
+  }
 }
