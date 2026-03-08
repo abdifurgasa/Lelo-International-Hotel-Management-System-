@@ -12,7 +12,7 @@ animation:bgMove 20s ease infinite;
 display:flex;
 }
 
-/* Animation */
+/* Background Animation */
 @keyframes bgMove{
 0%{background-position:0% 50%;}
 50%{background-position:100% 50%;}
@@ -23,9 +23,18 @@ display:flex;
 .sidebar{
 width:220px;
 height:100vh;
-background:#0f172a;
+
+/* Transparent Sidebar */
+background: rgba(255,255,255,0.03);
+
+backdrop-filter: blur(12px);
+
 color:white;
+
 padding:20px;
+box-sizing:border-box;
+
+border-right:1px solid rgba(255,255,255,0.1);
 }
 
 .sidebar li{
@@ -34,10 +43,16 @@ margin:6px 0;
 cursor:pointer;
 border-radius:6px;
 transition:0.3s;
+color:white;
+list-style:none;
 }
 
 .sidebar li:hover{
-background:#1e3a8a;
+background: rgba(255,255,255,0.15);
+}
+
+#logout{
+color:#ffcccc;
 }
 
 /* Main Panel */
@@ -45,8 +60,8 @@ background:#1e3a8a;
 flex:1;
 padding:20px;
 
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(12px);
+background: rgba(255,255,255,0.05);
+backdrop-filter: blur(12px);
 
 border-radius:20px;
 margin:20px;
@@ -68,49 +83,28 @@ transition:0.3s;
 }
 
 /* Colors */
-
-.card.rooms{
-background:linear-gradient(135deg,#2563eb,#0ea5e9);
-}
-
-.card.booking{
-background:linear-gradient(135deg,#0ea5e9,#14b8a6);
-}
-
-.card.food{
-background:linear-gradient(135deg,#16a34a,#22c55e);
-}
-
-.card.drink{
-background:linear-gradient(135deg,#0f766e,#14b8a6);
-}
-
-.card.billing{
-background:linear-gradient(135deg,#9333ea,#6366f1);
-}
-
-.card.revenue{
-background:linear-gradient(135deg,#f59e0b,#eab308);
-}
+.card.rooms{background:linear-gradient(135deg,#2563eb,#0ea5e9);}
+.card.booking{background:linear-gradient(135deg,#0ea5e9,#14b8a6);}
+.card.food{background:linear-gradient(135deg,#16a34a,#22c55e);}
+.card.drink{background:linear-gradient(135deg,#0f766e,#14b8a6);}
+.card.billing{background:linear-gradient(135deg,#9333ea,#6366f1);}
+.card.revenue{background:linear-gradient(135deg,#f59e0b,#eab308);}
 
 /* Chart */
 canvas{
 width:100%!important;
 height:160px!important;
 
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(12px);
+background: rgba(255,255,255,0.08);
+backdrop-filter: blur(12px);
 
 border-radius:15px;
 padding:20px;
 }
 
 /* Responsive */
-
 @media(max-width:600px){
-body{
-flex-direction:column;
-}
+body{flex-direction:column;}
 
 .sidebar{
 width:100%;
