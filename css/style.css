@@ -1,70 +1,96 @@
 body{
-margin:0;
-padding:0;
+    margin:0;
+    padding:0;
 
-font-family:"Times New Roman", Times, serif;
-font-weight:bold;
+    font-family:"Times New Roman", Times, serif;
+    font-weight:bold;
 
-background:url("../images/login-bg.jpg");
-background-size:cover;
-background-position:center;
+    background:url("../images/login-bg.jpg");
+    background-size:cover;
+    background-position:center;
 
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
 }
 
-/* Login Box */
+/* =========================
+Login Box (Minimized)
+========================= */
 
 .login-container{
-background:rgba(255,255,255,0.92);
-padding:40px;
-border-radius:12px;
-width:340px;
-text-align:center;
+    background:rgba(255,255,255,0.85);
 
-box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    padding:25px;
+    border-radius:12px;
+
+    width:260px;   /* Smaller box */
+    max-width:90%;
+
+    text-align:center;
+
+    box-shadow:0 6px 20px rgba(0,0,0,0.25);
 }
 
 /* Title */
 
 .login-container h2{
-font-family:"Times New Roman", Times, serif;
-font-size:28px;
-font-weight:bold;
-margin-bottom:20px;
+    font-family:"Times New Roman", Times, serif;
+    font-size:22px;
+    font-weight:bold;
+
+    margin-bottom:15px;
 }
 
 /* Inputs */
 
 .login-container input{
-width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:6px;
-border:1px solid #ccc;
+    width:100%;
 
-font-family:"Times New Roman", Times, serif;
-font-size:16px;
-font-weight:bold;
+    padding:10px;
+    margin:8px 0;
+
+    border-radius:6px;
+    border:1px solid #ccc;
+
+    font-family:"Times New Roman", Times, serif;
+    font-size:14px;
+    font-weight:bold;
 }
 
 /* Button */
 
 .login-container button{
-width:100%;
-padding:12px;
-background:#2c7be5;
-color:white;
-border:none;
-border-radius:6px;
-font-size:18px;
-font-family:"Times New Roman", Times, serif;
-font-weight:bold;
-cursor:pointer;
+    width:100%;
+
+    padding:10px;
+
+    background:#2c7be5;
+    color:white;
+
+    border:none;
+    border-radius:6px;
+
+    font-size:16px;
+    font-family:"Times New Roman", Times, serif;
+    font-weight:bold;
+
+    cursor:pointer;
+    transition:0.3s;
 }
 
 .login-container button:hover{
-background:#1a5dcc;
-  }
+    background:#1a5dcc;
+}
+
+/* =========================
+Tablet Responsive Fix
+========================= */
+
+@media (max-width:768px){
+    .login-container{
+        width:220px;
+        padding:20px;
+    }
+}
