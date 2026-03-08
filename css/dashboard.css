@@ -1,19 +1,39 @@
-/* ======================================
+/* =========================================
 LELO INTERNATIONAL HOTEL
-Professional Dashboard Style
-====================================== */
+Professional Dashboard UI Style
+========================================= */
 
 body{
 margin:0;
+
 font-family:"Times New Roman", Times, serif;
 font-weight:bold;
 
-background:#f4f6f9;
+/* Beautiful Soft Hotel Background */
+background: linear-gradient(
+135deg,
+#f5f7fa,
+#e4edf7,
+#f1f5f9
+);
+
+/* Smooth Background Animation */
+background-size:400% 400%;
+animation: backgroundMove 20s ease infinite;
 
 display:flex;
 }
 
-/* ===== Sidebar Menu ===== */
+/* Background Animation */
+@keyframes backgroundMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* =========================
+Sidebar Menu
+========================= */
 
 .sidebar{
 width:220px;
@@ -43,8 +63,10 @@ padding:0;
 .sidebar li{
 padding:12px;
 margin:6px 0;
+
 cursor:pointer;
 border-radius:6px;
+
 transition:0.3s;
 }
 
@@ -60,7 +82,9 @@ background:#f1f5f9;
 color:red;
 }
 
-/* ===== Main Dashboard ===== */
+/* =========================
+Main Dashboard Area
+========================= */
 
 .main{
 flex:1;
@@ -73,6 +97,7 @@ padding:20px;
 background:white;
 
 padding:15px;
+
 border-radius:10px;
 
 margin-bottom:20px;
@@ -80,7 +105,9 @@ margin-bottom:20px;
 box-shadow:0 2px 6px rgba(0,0,0,0.08);
 }
 
-/* ===== Statistic Cards ===== */
+/* =========================
+Statistic Cards
+========================= */
 
 .cards{
 display:grid;
@@ -102,10 +129,10 @@ box-shadow:0 2px 6px rgba(0,0,0,0.08);
 transition:0.3s;
 }
 
-/* Card Hover Animation */
+/* Card Hover Effect */
 
 .card:hover{
-transform:translateY(-4px);
+transform:translateY(-5px);
 }
 
 .card h3{
@@ -120,7 +147,9 @@ margin-top:10px;
 color:#111;
 }
 
-/* ===== Chart Area ===== */
+/* =========================
+Chart Area
+========================= */
 
 canvas{
 width:100% !important;
@@ -135,7 +164,9 @@ border-radius:12px;
 box-shadow:0 2px 6px rgba(0,0,0,0.08);
 }
 
-/* ===== Responsive Tablet Support ===== */
+/* =========================
+Responsive Tablet Support
+========================= */
 
 @media(max-width:900px){
 
