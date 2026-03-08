@@ -1,20 +1,22 @@
-export const en = {
+{
+"hotelName":"Lelo International Hotel",
 
-hotelName: "Lelo International Hotel",
+"login":"Login",
+"email":"Email",
+"password":"Password",
 
-loginTitle: "Hotel Management System",
-email: "Email",
-password: "Password",
-login: "Login",
+"dashboard":"Dashboard",
+"rooms":"Rooms",
+"booking":"Booking",
+"finance":"Finance",
 
-dashboard: "Dashboard",
-rooms: "Rooms",
-booking: "Booking",
-food: "Food",
-drink: "Drink",
-billing: "Billing",
-finance: "Finance",
+"addRoom":"Add Room",
+"roomNumber":"Room Number",
+"roomType":"Room Type",
+"roomPrice":"Room Price",
 
-logout: "Logout"
-
-};
+"single":"Single",
+"double":"Double",
+"deluxe":"Deluxe",
+"vip":"VIP"
+}
