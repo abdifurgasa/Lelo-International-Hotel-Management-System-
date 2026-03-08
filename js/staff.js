@@ -1,56 +1,56 @@
-import { auth, db } from "./firebase.js";
+import { db } from "./firebase.js";
 
 import {
-createUserWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-import {
-collection,
-addDoc,
-getDocs
+setDoc,
+doc,
+getDocs,
+collection
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 
 window.addStaff = async function(){
 
-const email = document.getElementById("staffEmail").value;
-const password = document.getElementById("staffPassword").value;
-const role = document.getElementById("staffRole").value;
+let email = document.getElementById("staffEmail").value;
+let role = document.getElementById("staffRole").value;
 
-try{
+if(!email || !role){
+alert("Fill all fields");
+return;
+}
 
-const user = await createUserWithEmailAndPassword(auth,email,password);
-
-await addDoc(collection(db,"users"),{
+await setDoc(doc(db,"users",email),{
 email:email,
-role:role
+role:role,
+createdAt:new Date()
 });
 
-alert("Staff Added");
+alert("Staff added");
 
 loadStaff();
 
-}catch(error){
-alert(error.message);
-}
-
 }
 
 
+/* Staff List Loader */
 
 window.loadStaff = async function(){
 
-const staffList = document.getElementById("staffList");
-staffList.innerHTML="";
+let list = document.getElementById("staffList");
 
-const querySnapshot = await getDocs(collection(db,"users"));
+if(!list) return;
 
-querySnapshot.forEach(doc=>{
+list.innerHTML="";
 
-const data = doc.data();
+const snapshot = await getDocs(collection(db,"users"));
 
-staffList.innerHTML += `
-<p>${data.email} - ${data.role}</p>
+snapshot.forEach(docSnap=>{
+
+let data = docSnap.data();
+
+list.innerHTML += `
+<p>
+${data.email} - ${data.role}
+</p>
 `;
 
 });
