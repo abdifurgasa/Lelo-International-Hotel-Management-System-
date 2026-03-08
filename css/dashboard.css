@@ -1,136 +1,123 @@
 body{
-  margin:0;
-  font-family:"Times New Roman", Times, serif;
-  font-weight:bold;
+margin:0;
+font-family:"Times New Roman", Times, serif;
+font-weight:bold;
 
-  /* ⭐ Luxury Blue-Green Gradient Background */
-  background: linear-gradient(
-    135deg,
-    #0f172a,
-    #0ea5e9,
-    #22c55e
-  );
+/* Blue-Green Enterprise Background */
+background: linear-gradient(135deg,#0f172a,#0ea5e9,#22c55e);
 
-  background-size:400% 400%;
-  animation: bgMove 20s ease infinite;
+background-size:400% 400%;
+animation:bgMove 20s ease infinite;
 
-  display:flex;
+display:flex;
 }
 
-/* Smooth Gradient Animation */
+/* Animation */
 @keyframes bgMove{
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 
-/* =========================
-Sidebar (Solid Dark)
-========================= */
+/* Sidebar */
 .sidebar{
-  width:220px;
-  height:100vh;
-  background:#0f172a; /* Solid Dark */
-  color:white;
-  padding:20px;
-  box-sizing:border-box;
-  border-right:1px solid rgba(255,255,255,0.1);
+width:220px;
+height:100vh;
+background:#0f172a;
+color:white;
+padding:20px;
 }
 
 .sidebar li{
-  padding:12px;
-  margin:6px 0;
-  cursor:pointer;
-  border-radius:6px;
-  transition:0.3s;
-  color:white;
+padding:12px;
+margin:6px 0;
+cursor:pointer;
+border-radius:6px;
+transition:0.3s;
 }
 
 .sidebar li:hover{
-  background:#1e3a8a; /* Hover effect blue */
+background:#1e3a8a;
 }
 
-#logout{
-  color:#ffcccc;
-}
-
-/* =========================
-Main Dashboard Panel (Glass)
-========================= */
+/* Main Panel */
 .main{
-  flex:1;
-  padding:20px;
+flex:1;
+padding:20px;
 
-  /* Glass effect */
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(12px);
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(12px);
 
-  border-radius:20px;
-  margin:20px;
+border-radius:20px;
+margin:20px;
 }
 
-.topbar{
-  padding:15px;
-  color:white;
-}
-
-/* =========================
-Cards
-========================= */
+/* Cards */
 .cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:20px;
 }
 
 .card{
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(12px);
-  color:white;
-  padding:25px;
-  border-radius:15px;
-  text-align:center;
-  transition:0.3s;
+padding:25px;
+border-radius:15px;
+text-align:center;
+color:white;
+transition:0.3s;
 }
 
-.card:hover{
-  transform:translateY(-5px);
+/* Colors */
+
+.card.rooms{
+background:linear-gradient(135deg,#2563eb,#0ea5e9);
 }
 
-/* =========================
-Chart Panel
-========================= */
+.card.booking{
+background:linear-gradient(135deg,#0ea5e9,#14b8a6);
+}
+
+.card.food{
+background:linear-gradient(135deg,#16a34a,#22c55e);
+}
+
+.card.drink{
+background:linear-gradient(135deg,#0f766e,#14b8a6);
+}
+
+.card.billing{
+background:linear-gradient(135deg,#9333ea,#6366f1);
+}
+
+.card.revenue{
+background:linear-gradient(135deg,#f59e0b,#eab308);
+}
+
+/* Chart */
 canvas{
-  width:100% !important;
-  max-height:350px;
+width:100%!important;
+height:160px!important;
 
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(12px);
-  padding:20px;
-  border-radius:15px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(12px);
+
+border-radius:15px;
+padding:20px;
 }
 
-/* =========================
-Responsive
-========================= */
-@media(max-width:900px){
-  .sidebar{
-    width:180px;
-  }
-}
+/* Responsive */
 
 @media(max-width:600px){
-  body{
-    flex-direction:column;
-  }
-  .sidebar{
-    width:100%;
-    height:auto;
-  }
-  .main{
-    margin:10px;
-  }
-  .cards{
-    grid-template-columns:1fr;
-  }
+body{
+flex-direction:column;
+}
+
+.sidebar{
+width:100%;
+height:auto;
+}
+
+.main{
+margin:10px;
+}
 }
