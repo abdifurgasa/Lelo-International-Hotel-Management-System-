@@ -1,12 +1,8 @@
 /* Global */
-body {
-    margin:0; font-family:"Times New Roman", Times, serif; background:#f0f4f8; color:#333;
-}
+body { margin:0; font-family:"Times New Roman", Times, serif; background:#f0f4f8; color:#333; }
 
 /* Sidebar */
-.sidebar {
-    width:220px; height:100vh; background:#eee; position:fixed; top:0; left:0; padding:20px; overflow-y:auto;
-}
+.sidebar { width:220px; height:100vh; background:#eee; position:fixed; top:0; left:0; padding:20px; overflow-y:auto; }
 .sidebar h2{ text-align:center; color:#4b0082; margin-bottom:20px; }
 .sidebar ul{list-style:none;padding:0;}
 .sidebar ul li{padding:10px;margin-bottom:5px;border-radius:6px;}
