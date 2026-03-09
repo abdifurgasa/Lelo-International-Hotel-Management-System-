@@ -74,59 +74,32 @@
 
 </div>
 
-
-
 <!-- ================= Rooms Page ================= -->
 <div id="rooms" class="page" style="display:none">
 
 <h2>Room Management</h2>
 
+<!-- Add Room Form -->
 <div class="card">
-
-<h3>Add Room</h3>
-
-<input type="text" id="roomNumber" placeholder="Room Number">
-
-<select id="roomType">
-<option>Single</option>
-<option>Double</option>
-<option>Deluxe</option>
-<option>VIP</option>
-</select>
-
-<input type="number" id="roomPrice" placeholder="Room Price">
-<input type="file" id="roomPhoto">
-
-<button onclick="addRoom()">Add Room</button>
-
+    <h3>Add Room</h3>
+    <input type="text" id="roomNumber" placeholder="Room Number">
+    <select id="roomType">
+        <option>Single</option>
+        <option>Double</option>
+        <option>Deluxe</option>
+        <option>VIP</option>
+    </select>
+    <input type="number" id="roomPrice" placeholder="Room Price">
+    <input type="file" id="roomPhoto">
+    <button onclick="addRoom()">Add Room</button>
 </div>
 
-<div class="card">
-
-<h3>Room List</h3>
-
-<table>
-
-<thead>
-<tr>
-<th>Photo</th>
-<th>Room</th>
-<th>Type</th>
-<th>Price</th>
-<th>Status</th>
-</tr>
-</thead>
-
-<tbody id="roomTable"></tbody>
-
-</table>
+<!-- Room List as Cards -->
+<h3>Available Rooms</h3>
+<div id="roomList" class="cardWrap"></div>
 
 </div>
-
-</div>
-
-
-
+  
 <!-- ================= Orders ================= -->
 <div id="orderPage" class="page" style="display:none">
 
