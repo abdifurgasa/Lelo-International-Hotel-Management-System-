@@ -16,8 +16,9 @@
 <div class="sidebar">
     <h2>Lelo International Hotel</h2>
     <ul>
-        <li id="dashboardMenu">Dashboard</li>
-        <ul id="dashboardSubmenu" class="submenu">
+    <li class="menuItem" id="dashboardMenu">
+        Dashboard
+        <ul class="submenu" id="dashboardSubmenu">
             <li onclick="loadPage('rooms')">Rooms</li>
             <li onclick="loadPage('orderPage')">Orders</li>
             <li onclick="loadPage('billing')">Billing</li>
@@ -26,8 +27,9 @@
             <li onclick="loadPage('staffPage')">Staff Management</li>
             <li onclick="loadPage('finance')">Finance</li>
         </ul>
-        <li onclick="logout()">Logout</li>
-    </ul>
+    </li>
+    <li onclick="logout()" class="logoutBtn">Logout</li>
+</ul>
 </div>
 
 <!-- Content Area -->
