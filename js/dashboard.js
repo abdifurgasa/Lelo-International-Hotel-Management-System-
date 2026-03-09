@@ -1,10 +1,37 @@
+/* ===============================
+IMPORT FIREBASE
+=============================== */
+
 import { auth, db } from "./firebase.js";
+
 import {
 collection,
 getDocs,
 doc,
 getDoc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+import {
+onAuthStateChanged,
+signOut
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+
+/* ===============================
+AUTH CHECK
+=============================== */
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+window.location = "index.html";
+return;
+}
+
+/* Load dashboard automatically */
+loadDashboardStats();
+
+});
 
 
 /* ===============================
@@ -22,9 +49,10 @@ return;
 
 try{
 
-/* Get User Role */
+/* GET USER ROLE */
 
-const userDoc = await getDoc(doc(db,"users",user.email));
+const userRef = doc(db,"users",user.email);
+const userDoc = await getDoc(userRef);
 
 if(!userDoc.exists()){
 alert("Access denied");
@@ -33,7 +61,8 @@ return;
 
 const role = userDoc.data().role;
 
-/* ROLE PERMISSIONS */
+
+/* ROLE SECURITY */
 
 if(role !== "manager"){
 
@@ -44,21 +73,24 @@ return;
 
 }
 
-/* Hide all pages */
 
-document.querySelectorAll(".page").forEach(p=>{
-p.style.display="none";
+/* HIDE ALL PAGES */
+
+document.querySelectorAll(".page").forEach(page=>{
+page.style.display="none";
 });
 
-/* Show selected page */
 
-const page = document.getElementById(pageId);
+/* SHOW SELECTED PAGE */
 
-if(page){
-page.style.display="block";
+const selectedPage = document.getElementById(pageId);
+
+if(selectedPage){
+selectedPage.style.display="block";
 }
 
-/* SAFE MODULE LOADING */
+
+/* LOAD PAGE MODULES */
 
 if(pageId === "staffPage"){
 if(typeof loadStaff === "function"){
@@ -89,7 +121,9 @@ loadDrinks();
 }
 
 }catch(error){
+
 console.log("Page load error:",error);
+
 }
 
 };
@@ -104,46 +138,52 @@ async function loadDashboardStats(){
 
 try{
 
+/* ROOMS */
+
 const roomsSnap = await getDocs(collection(db,"rooms"));
 
 let totalRooms = roomsSnap.size;
 let occupiedRooms = 0;
 
-roomsSnap.forEach(r=>{
-if(r.data().status === "Occupied"){
+roomsSnap.forEach(room=>{
+if(room.data().status === "Occupied"){
 occupiedRooms++;
 }
 });
 
-const foodSnap = await getDocs(collection(db,"foods"));
-const drinkSnap = await getDocs(collection(db,"drinks"));
 
+/* FOOD */
+
+const foodSnap = await getDocs(collection(db,"foods"));
 let totalFoods = foodSnap.size;
+
+
+/* DRINK */
+
+const drinkSnap = await getDocs(collection(db,"drinks"));
 let totalDrinks = drinkSnap.size;
 
-/* Update UI */
 
-if(document.getElementById("totalRooms")){
-document.getElementById("totalRooms").innerText = totalRooms;
-}
+/* UPDATE UI */
 
-if(document.getElementById("occupiedRooms")){
-document.getElementById("occupiedRooms").innerText = occupiedRooms;
-}
+const totalRoomsEl = document.getElementById("totalRooms");
+const occupiedRoomsEl = document.getElementById("occupiedRooms");
+const totalFoodsEl = document.getElementById("totalFoods");
+const totalDrinksEl = document.getElementById("totalDrinks");
 
-if(document.getElementById("totalFoods")){
-document.getElementById("totalFoods").innerText = totalFoods;
-}
+if(totalRoomsEl) totalRoomsEl.innerText = totalRooms;
+if(occupiedRoomsEl) occupiedRoomsEl.innerText = occupiedRooms;
+if(totalFoodsEl) totalFoodsEl.innerText = totalFoods;
+if(totalDrinksEl) totalDrinksEl.innerText = totalDrinks;
 
-if(document.getElementById("totalDrinks")){
-document.getElementById("totalDrinks").innerText = totalDrinks;
-}
+}catch(error){
 
-}catch(err){
-console.log(err);
+console.log("Dashboard stats error:",error);
+
 }
 
 }
+
 
 
 /* ===============================
@@ -152,19 +192,20 @@ LOGOUT
 
 window.logout = function(){
 
-if(confirm("Logout?")){
+if(confirm("Are you sure you want to logout?")){
 
-auth.signOut().then(()=>{
+signOut(auth)
+.then(()=>{
+
 window.location="index.html";
+
+})
+.catch((error)=>{
+
+console.log("Logout error:",error);
+
 });
 
 }
 
 };
-
-
-/* ===============================
-AUTO LOAD DASHBOARD
-=============================== */
-
-loadDashboardStats();
