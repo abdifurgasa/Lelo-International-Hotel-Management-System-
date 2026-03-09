@@ -47,7 +47,7 @@ SIDEBAR
     color: #6a0dad; 
 }
 
-/* Submenu purple letters */
+/* Submenu dark green letters */
 .submenu { 
     display: none; 
     list-style: none; 
@@ -58,11 +58,11 @@ SIDEBAR
     padding: 8px 5px; 
     border-radius: 4px; 
     font-weight: bold; 
-    color: purple; 
+    color: #006400; /* Dark green */
     cursor: pointer; 
 }
 .submenu li:hover { 
-    background: #e0d4ff; 
+    background: #cce5cc; 
 }
 
 /* Logout button */
