@@ -185,31 +185,32 @@
 
 </div>
 
-
-
-<!-- ================= Staff ================= -->
+<!-- ================= Staff Page ================= -->
 <div id="staffPage" class="page" style="display:none">
 
 <h2>Staff Management</h2>
 
-<input type="email" id="staffEmail" placeholder="Staff Email">
-<input type="password" id="staffPassword" placeholder="Password">
+<!-- Add Staff Form -->
+<div class="card">
+    <h3>Add Staff</h3>
+    <input type="email" id="staffEmail" placeholder="Staff Email">
+    <input type="password" id="staffPassword" placeholder="Password">
+    <select id="staffRole">
+        <option value="reception">Reception</option>
+        <option value="kitchen">Kitchen</option>
+        <option value="barman">Barman</option>
+        <option value="worker">Worker</option>
+        <option value="manager">Manager</option>
+    </select>
+    <button onclick="addStaff()">Add Staff</button>
+</div>
 
-<select id="staffRole">
-<option value="reception">Reception</option>
-<option value="kitchen">Kitchen</option>
-<option value="barman">Barman</option>
-<option value="worker">Worker</option>
-<option value="manager">Manager</option>
-</select>
-
-<button onclick="addStaff()">Add Staff</button>
-
+<!-- Staff List -->
 <h3>Staff List</h3>
-
-<div id="staffList"></div>
+<div id="staffList" class="cardWrap"></div>
 
 </div>
+
 
 <div id="finance" class="page" style="display:none">
 
