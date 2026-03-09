@@ -10,13 +10,15 @@
 
 <link rel="stylesheet" href="css/dashboard.css">
 
+<!-- Chart JS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
+<!-- ================= SIDEBAR ================= -->
+
 <div class="sidebar">
 
 <h2>Lelo International Hotel</h2>
@@ -49,11 +51,13 @@
 </div>
 
 
-<!-- CONTENT -->
+<!-- ================= CONTENT ================= -->
+
 <div class="content">
 
 
 <!-- HOTEL BANNER -->
+
 <div class="hotelBanner">
 
 <div class="bannerOverlay">
@@ -69,7 +73,8 @@
 </div>
 
 
-<!-- DASHBOARD -->
+<!-- ================= DASHBOARD ================= -->
+
 <div id="dashboard" class="page">
 
 <div class="cardBox">
@@ -99,8 +104,9 @@
 </div>
 
 
-<!-- ROOMS -->
-<div id="rooms" class="page">
+<!-- ================= ROOMS ================= -->
+
+<div id="rooms" class="page" style="display:none">
 
 <h2>Room Management</h2>
 
@@ -125,21 +131,22 @@
 
 </div>
 
-<h3>Room List</h3>
+<h3>Available Rooms</h3>
 
 <div id="roomList" class="cardWrap"></div>
 
 </div>
 
 
-<!-- RESTAURANT -->
-<div id="restaurant" class="page">
+<!-- ================= RESTAURANT ================= -->
+
+<div id="restaurant" class="page" style="display:none">
 
 <h2>Restaurant Menu</h2>
 
 <div class="card">
 
-<h3>Add Food</h3>
+<h3>Add Food Item</h3>
 
 <input type="text" id="foodName" placeholder="Food Name">
 
@@ -151,13 +158,16 @@
 
 </div>
 
+<h3>Food List</h3>
+
 <div id="foodMenuList" class="cardWrap"></div>
 
 </div>
 
 
-<!-- DRINKS -->
-<div id="drinks" class="page">
+<!-- ================= DRINKS ================= -->
+
+<div id="drinks" class="page" style="display:none">
 
 <h2>Drinks Menu</h2>
 
@@ -175,17 +185,22 @@
 
 </div>
 
+<h3>Drink List</h3>
+
 <div id="drinkMenuList" class="cardWrap"></div>
 
 </div>
 
 
-<!-- STAFF -->
-<div id="staffPage" class="page">
+<!-- ================= STAFF ================= -->
+
+<div id="staffPage" class="page" style="display:none">
 
 <h2>Staff Management</h2>
 
 <div class="card">
+
+<h3>Add Staff</h3>
 
 <input type="email" id="staffEmail" placeholder="Staff Email">
 
@@ -211,15 +226,60 @@
 
 </div>
 
+<h3>Staff List</h3>
+
 <div id="staffList" class="cardWrap"></div>
 
 </div>
 
 
+<!-- ================= FINANCE ================= -->
+
+<div id="finance" class="page" style="display:none">
+
+<h2>Hotel Finance Dashboard</h2>
+
+<div class="cardBox">
+
+<div class="statCard totalRevenue">
+<h3>Total Revenue</h3>
+<p id="totalRevenue">0</p>
+</div>
+
+<div class="statCard roomRevenue">
+<h3>Room Revenue</h3>
+<p id="roomRevenue">0</p>
+</div>
+
+<div class="statCard foodRevenue">
+<h3>Food Revenue</h3>
+<p id="foodRevenue">0</p>
+</div>
+
+<div class="statCard drinkRevenue">
+<h3>Drink Revenue</h3>
+<p id="drinkRevenue">0</p>
+</div>
+
+</div>
+
+<canvas id="revenueChart"></canvas>
+
 </div>
 
 
+</div>
+
+
+<!-- ================= JS ================= -->
+
 <script src="js/dashboard.js"></script>
+<script type="module" src="js/rooms.js"></script>
+<script type="module" src="js/restaurant.js"></script>
+<script type="module" src="js/drinks.js"></script>
+<script type="module" src="js/staff.js"></script>
+<script type="module" src="js/finance.js"></script>
 
 </body>
+
 </html>
