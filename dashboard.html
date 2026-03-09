@@ -2,28 +2,22 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Lelo International Hotel System</title>
-
 <link rel="stylesheet" href="css/dashboard.css">
-
 <!-- Chart JS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
 
 <body>
 
-<!-- Sidebar -->
+<!-- =========================
+SIDEBAR
+========================= -->
 <div class="sidebar">
-
 <h2>Lelo International Hotel</h2>
-
 <ul>
-
 <li onclick="loadPage('dashboard')">Dashboard</li>
 <li onclick="loadPage('rooms')">Rooms</li>
 <li onclick="loadPage('orderPage')">Orders</li>
@@ -33,21 +27,29 @@
 <li onclick="loadPage('staffPage')">Staff Management</li>
 <li onclick="loadPage('finance')">Finance</li>
 <li onclick="logout()">Logout</li>
-
 </ul>
-
 </div>
 
-
-<!-- Content Area -->
+<!-- =========================
+CONTENT AREA
+========================= -->
 <div class="content">
 
-
-<!-- ================= Dashboard Page ================= -->
+<!-- =========================
+DASHBOARD PAGE
+========================= -->
 <div id="dashboard" class="page">
 
-<h1 class="welcomeTitle">Welcome to Lelo International Hotel System</h1>
+<!-- Hotel Banner Header -->
+<div class="hotelBanner">
+  <div class="bannerOverlay">
+    <h1 class="welcomeTitle">Welcome to Lelo International Hotel</h1>
+    <p class="bannerSubtitle">Smart Hotel Management System</p>
+    <div class="todayDate" id="todayDate"></div>
+  </div>
+</div>
 
+<!-- Dashboard Cards -->
 <div class="cardBox">
 
 <div class="statCard">
@@ -77,40 +79,38 @@
 
 </div>
 
+</div>
 
-<!-- ================= Rooms ================= -->
+<!-- =========================
+ROOMS PAGE
+========================= -->
 <div id="rooms" class="page" style="display:none">
 
 <h2>Room Management</h2>
 
+<!-- Add Room Form -->
 <div class="card">
-<h3>Add Room</h3>
-
-<input type="text" id="roomNumber" placeholder="Room Number">
-
-<select id="roomType">
-<option>Single</option>
-<option>Double</option>
-<option>Deluxe</option>
-<option>VIP</option>
-</select>
-
-<input type="number" id="roomPrice" placeholder="Room Price">
-
-<input type="file" id="roomPhoto">
-
-<button onclick="addRoom()">Add Room</button>
-
+    <h3>Add Room</h3>
+    <input type="text" id="roomNumber" placeholder="Room Number">
+    <select id="roomType">
+        <option>Single</option>
+        <option>Double</option>
+        <option>Deluxe</option>
+        <option>VIP</option>
+    </select>
+    <input type="number" id="roomPrice" placeholder="Room Price">
+    <input type="file" id="roomPhoto">
+    <button onclick="addRoom()">Add Room</button>
 </div>
 
 <h3>Available Rooms</h3>
-
 <div id="roomList" class="cardWrap"></div>
 
 </div>
 
-
-<!-- ================= Orders ================= -->
+<!-- =========================
+ORDERS PAGE
+========================= -->
 <div id="orderPage" class="page" style="display:none">
 
 <h2>Orders</h2>
@@ -126,68 +126,59 @@
 <button onclick="addOrder()">Add Order</button>
 
 <h3>Order List</h3>
-
 <div id="foodOrders"></div>
 <div id="drinkOrders"></div>
 
 </div>
 
-
-<!-- ================= Restaurant ================= -->
+<!-- =========================
+RESTAURANT PAGE
+========================= -->
 <div id="restaurant" class="page" style="display:none">
 
 <h2>Restaurant Menu</h2>
 
 <div class="card">
-
-<h3>Add Food Item</h3>
-
-<input type="text" id="foodName" placeholder="Food Name">
-<input type="number" id="foodPrice" placeholder="Price">
-<input type="file" id="foodPhoto">
-
-<button onclick="addFood()">Add Food</button>
-
+    <h3>Add Food Item</h3>
+    <input type="text" id="foodName" placeholder="Food Name">
+    <input type="number" id="foodPrice" placeholder="Price">
+    <input type="file" id="foodPhoto">
+    <button onclick="addFood()">Add Food</button>
 </div>
 
 <h3>Food List</h3>
-
 <div id="foodMenuList" class="cardWrap"></div>
 
 </div>
 
-
-<!-- ================= Drinks ================= -->
+<!-- =========================
+DRINKS PAGE
+========================= -->
 <div id="drinks" class="page" style="display:none">
 
 <h2>Drinks Menu</h2>
 
 <div class="card">
-
-<h3>Add Drink</h3>
-
-<input type="text" id="drinkName" placeholder="Drink Name">
-<input type="number" id="drinkPrice" placeholder="Price">
-<input type="file" id="drinkPhoto">
-
-<button onclick="addDrink()">Add Drink</button>
-
+    <h3>Add Drink</h3>
+    <input type="text" id="drinkName" placeholder="Drink Name">
+    <input type="number" id="drinkPrice" placeholder="Price">
+    <input type="file" id="drinkPhoto">
+    <button onclick="addDrink()">Add Drink</button>
 </div>
 
 <h3>Drink List</h3>
-
 <div id="drinkMenuList" class="cardWrap"></div>
 
 </div>
 
-
-<!-- ================= Billing ================= -->
+<!-- =========================
+BILLING PAGE
+========================= -->
 <div id="billing" class="page" style="display:none">
 
 <h2>Guest Billing</h2>
 
 <table>
-
 <thead>
 <tr>
 <th>Guest</th>
@@ -199,28 +190,25 @@
 <th>Action</th>
 </tr>
 </thead>
-
 <tbody id="billingList"></tbody>
-
 </table>
 
 </div>
 
-
-<!-- ================= Staff ================= -->
+<!-- =========================
+STAFF PAGE
+========================= -->
 <div id="staffPage" class="page" style="display:none">
 
 <h2>Staff Management</h2>
 
 <div class="card">
-
 <h3>Add Staff</h3>
-
 <input type="email" id="staffEmail" placeholder="Staff Email">
 
 <div class="passwordWrapper">
 <input type="password" id="staffPassword" placeholder="Password">
-<span id="toggleStaffPassword">👁️</span>
+<span id="toggleStaffPassword" title="Show/Hide Password">👁️</span>
 </div>
 
 <select id="staffRole">
@@ -232,54 +220,58 @@
 </select>
 
 <button onclick="addStaff()">Add Staff</button>
-
 </div>
 
 <h3>Staff List</h3>
-
 <div id="staffList" class="cardWrap"></div>
+
+<script>
+const toggleStaffPassword = document.getElementById("toggleStaffPassword");
+const staffPassword = document.getElementById("staffPassword");
+
+toggleStaffPassword.addEventListener("click", function () {
+    const type = staffPassword.getAttribute("type") === "password" ? "text" : "password";
+    staffPassword.setAttribute("type", type);
+    this.textContent = type === "password" ? "👁️" : "🙈";
+});
+</script>
 
 </div>
 
-
-<!-- ================= Finance ================= -->
+<!-- =========================
+FINANCE PAGE
+========================= -->
 <div id="finance" class="page" style="display:none">
 
 <h2>Hotel Finance Dashboard</h2>
 
 <div class="cardBox">
-
 <div class="statCard">
 <h3>Total Revenue</h3>
 <p id="totalRevenue">0</p>
 </div>
-
 <div class="statCard">
 <h3>Room Revenue</h3>
 <p id="roomRevenue">0</p>
 </div>
-
 <div class="statCard">
 <h3>Food Revenue</h3>
 <p id="foodRevenue">0</p>
 </div>
-
 <div class="statCard">
 <h3>Drink Revenue</h3>
 <p id="drinkRevenue">0</p>
 </div>
-
 </div>
 
 <h3>Revenue Chart</h3>
-
 <canvas id="revenueChart"></canvas>
 
 </div>
 
-
-<!-- ================= JS MODULES ================= -->
-
+<!-- =========================
+SCRIPTS
+========================= -->
 <script type="module" src="js/dashboard.js"></script>
 <script type="module" src="js/rooms.js"></script>
 <script type="module" src="js/order.js"></script>
@@ -289,29 +281,6 @@
 <script type="module" src="js/staff.js"></script>
 <script type="module" src="js/finance.js"></script>
 <script type="module" src="js/roleDashboard.js"></script>
-
-
-<!-- Staff Password Toggle -->
-<script>
-
-const toggle = document.getElementById("toggleStaffPassword");
-const password = document.getElementById("staffPassword");
-
-if(toggle && password){
-
-toggle.addEventListener("click", () => {
-
-const type = password.type === "password" ? "text" : "password";
-password.type = type;
-
-toggle.textContent = type === "password" ? "👁️" : "🙈";
-
-});
-
-}
-
-</script>
-
 
 </body>
 </html>
