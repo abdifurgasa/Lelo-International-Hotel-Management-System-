@@ -1,76 +1,63 @@
 import { db } from "./firebase.js";
+import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-import {
-collection,
-getDocs
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+/* ===============================
+LOAD FINANCE DATA
+=============================== */
+window.loadFinance = async function() {
+    try {
+        const billingSnap = await getDocs(collection(db, "billing"));
 
+        let roomRevenue = 0;
+        let foodRevenue = 0;
+        let drinkRevenue = 0;
 
-window.loadFinance = async function(){
+        billingSnap.forEach(docSnap => {
+            const bill = docSnap.data();
+            if(bill.status !== "Paid") return;
 
-let roomRevenue = 0;
-let foodRevenue = 0;
-let drinkRevenue = 0;
+            switch(bill.itemType) {
+                case "room": roomRevenue += bill.price; break;
+                case "food": foodRevenue += bill.price; break;
+                case "drink": drinkRevenue += bill.price; break;
+            }
+        });
 
-try{
+        const totalRevenue = roomRevenue + foodRevenue + drinkRevenue;
 
-/* ROOM PAYMENTS */
+        // Update cards
+        document.getElementById("totalRevenue").innerText = `$${totalRevenue}`;
+        document.getElementById("roomRevenue").innerText = `$${roomRevenue}`;
+        document.getElementById("foodRevenue").innerText = `$${foodRevenue}`;
+        document.getElementById("drinkRevenue").innerText = `$${drinkRevenue}`;
 
-const roomSnap = await getDocs(collection(db,"roomPayments"));
+        // Render chart
+        const ctx = document.getElementById("revenueChart").getContext("2d");
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Room', 'Food', 'Drink'],
+                datasets: [{
+                    label: 'Revenue ($)',
+                    data: [roomRevenue, foodRevenue, drinkRevenue],
+                    backgroundColor: ['#4caf50', '#ff9800', '#2196f3']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: 'Revenue Breakdown' }
+                }
+            }
+        });
 
-roomSnap.forEach(doc=>{
-roomRevenue += Number(doc.data().amount);
-});
+    } catch (err) {
+        console.log("Load finance error:", err);
+    }
+};
 
-
-/* FOOD ORDERS */
-
-const foodSnap = await getDocs(collection(db,"foodOrders"));
-
-foodSnap.forEach(doc=>{
-foodRevenue += Number(doc.data().price);
-});
-
-
-/* DRINK ORDERS */
-
-const drinkSnap = await getDocs(collection(db,"drinkOrders"));
-
-drinkSnap.forEach(doc=>{
-drinkRevenue += Number(doc.data().price);
-});
-
-
-let totalRevenue = roomRevenue + foodRevenue + drinkRevenue;
-
-
-/* UPDATE CARDS */
-
-document.getElementById("totalRevenue").innerText = totalRevenue;
-document.getElementById("roomRevenue").innerText = roomRevenue;
-document.getElementById("foodRevenue").innerText = foodRevenue;
-document.getElementById("drinkRevenue").innerText = drinkRevenue;
-
-
-/* CREATE CHART */
-
-const ctx = document.getElementById("revenueChart");
-
-new Chart(ctx,{
-type:"bar",
-data:{
-labels:["Rooms","Food","Drinks"],
-datasets:[{
-label:"Revenue",
-data:[roomRevenue,foodRevenue,drinkRevenue]
-}]
-}
-});
-
-}catch(error){
-
-console.log("Finance error:",error);
-
-}
-
-}
+/* ===============================
+AUTO LOAD FINANCE
+=============================== */
+loadFinance();
