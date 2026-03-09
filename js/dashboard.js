@@ -18,7 +18,6 @@ selectedPage.style.display = "block";
 
 };
 
-
 /* =========================
 COLLAPSIBLE DASHBOARD MENU
 ========================= */
