@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Lelo International Hotel System</title>
 
@@ -35,8 +38,10 @@
 
 </div>
 
+
 <!-- Content Area -->
 <div class="content">
+
 
 <!-- ================= Dashboard Page ================= -->
 <div id="dashboard" class="page">
@@ -68,6 +73,8 @@
 </div>
 
 </div>
+
+
 
 <!-- ================= Rooms Page ================= -->
 <div id="rooms" class="page" style="display:none">
@@ -118,7 +125,9 @@
 
 </div>
 
-<!-- ================= Order Page ================= -->
+
+
+<!-- ================= Orders ================= -->
 <div id="orderPage" class="page" style="display:none">
 
 <h2>Orders</h2>
@@ -140,7 +149,9 @@
 
 </div>
 
-<!-- ================= Restaurant Page ================= -->
+
+
+<!-- ================= Restaurant ================= -->
 <div id="restaurant" class="page" style="display:none">
 
 <h2>Restaurant Menu</h2>
@@ -167,7 +178,9 @@
 
 </div>
 
-<!-- ================= Drinks Page ================= -->
+
+
+<!-- ================= Drinks ================= -->
 <div id="drinks" class="page" style="display:none">
 
 <h2>Drinks Menu</h2>
@@ -194,7 +207,9 @@
 
 </div>
 
-<!-- ================= Billing Page ================= -->
+
+
+<!-- ================= Billing ================= -->
 <div id="billing" class="page" style="display:none">
 
 <h2>Guest Billing</h2>
@@ -216,7 +231,9 @@
 
 </div>
 
-<!-- ================= Staff Page ================= -->
+
+
+<!-- ================= Staff ================= -->
 <div id="staffPage" class="page" style="display:none">
 
 <h2>Staff Management</h2>
@@ -240,27 +257,51 @@
 
 </div>
 
-<!-- ================= Finance Page ================= -->
 <div id="finance" class="page" style="display:none">
 
-<h2>Hotel Revenue</h2>
+<h2>Hotel Finance Dashboard</h2>
+
+<div class="cardBox">
+
+<div class="statCard">
+<h3>Total Revenue</h3>
+<p id="totalRevenue">0</p>
+</div>
+
+<div class="statCard">
+<h3>Room Revenue</h3>
+<p id="roomRevenue">0</p>
+</div>
+
+<div class="statCard">
+<h3>Food Revenue</h3>
+<p id="foodRevenue">0</p>
+</div>
+
+<div class="statCard">
+<h3>Drink Revenue</h3>
+<p id="drinkRevenue">0</p>
+</div>
+
+</div>
+
+<h3>Revenue Chart</h3>
 
 <canvas id="revenueChart"></canvas>
 
 </div>
 
-</div>
+<!-- ================= JS MODULES ================= -->
 
-<!-- Scripts -->
+<script type="module" src="js/dashboard.js"></script>
 <script type="module" src="js/rooms.js"></script>
 <script type="module" src="js/order.js"></script>
-<script type="module" src="js/roleDashboard.js"></script>
 <script type="module" src="js/billing.js"></script>
 <script type="module" src="js/restaurant.js"></script>
 <script type="module" src="js/drinks.js"></script>
 <script type="module" src="js/staff.js"></script>
 <script type="module" src="js/finance.js"></script>
-<script type="module" src="js/dashboard.js"></script>
+<script type="module" src="js/roleDashboard.js"></script>
 
 </body>
 </html>
