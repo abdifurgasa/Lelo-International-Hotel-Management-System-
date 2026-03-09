@@ -21,6 +21,7 @@ window.loadBilling = async function() {
                 <td>${bill.itemType}</td>
                 <td>$${bill.price}</td>
                 <td>${bill.status}</td>
+                <td>${bill.paymentMethod || ""}</td>
                 <td>
                     ${bill.status === "Pending" ? `<button onclick="markPaid('${docSnap.id}')">Mark Paid</button>` : ""}
                 </td>
