@@ -29,59 +29,21 @@ SIDEBAR
 <h2>Lelo Hotel</h2>
 
 <ul>
-
-<li class="menuItem">
-
-<span class="menuTitle" id="dashboardMenu">
-<i class="fa-solid fa-chart-line"></i> Dashboard
-</span>
-
-<ul class="submenu" id="dashboardSubmenu">
-
-<li onclick="loadPage('dashboard')">
-<i class="fa-solid fa-chart-pie"></i> Dashboard Home
-</li>
-
-<li onclick="loadPage('rooms')">
-<i class="fa-solid fa-bed"></i> Rooms
-</li>
-
-<li onclick="loadPage('orderPage')">
-<i class="fa-solid fa-cart-shopping"></i> Orders
-</li>
-
-<li onclick="loadPage('billing')">
-<i class="fa-solid fa-file-invoice-dollar"></i> Billing
-</li>
-
-<li onclick="loadPage('restaurant')">
-<i class="fa-solid fa-utensils"></i> Restaurant
-</li>
-
-<li onclick="loadPage('drinks')">
-<i class="fa-solid fa-wine-glass"></i> Drinks
-</li>
-
-<li onclick="loadPage('staffPage')">
-<i class="fa-solid fa-user-tie"></i> Staff
-</li>
-
-<li onclick="loadPage('finance')">
-<i class="fa-solid fa-coins"></i> Finance
-</li>
-
+    <li class="menuItem">
+        <span class="menuTitle">Dashboard</span>
+        <ul class="submenu">
+            <li onclick="loadPage('rooms')">Rooms</li>
+            <li onclick="loadPage('orderPage')">Orders</li>
+            <li onclick="loadPage('billing')">Billing</li>
+            <li onclick="loadPage('restaurant')">Restaurant</li>
+            <li onclick="loadPage('drinks')">Drinks</li>
+            <li onclick="loadPage('staffPage')">Staff</li>
+            <li onclick="loadPage('finance')">Finance</li>
+        </ul>
+    </li>
+    <li onclick="logout()" class="logoutBtn">Logout</li>
 </ul>
-
-</li>
-
-<li onclick="logout()" class="logoutBtn">
-<i class="fa-solid fa-right-from-bracket"></i> Logout
-</li>
-
-</ul>
-
 </div>
-
 
 <!-- =====================
 CONTENT
