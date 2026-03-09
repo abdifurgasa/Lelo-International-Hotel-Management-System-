@@ -180,31 +180,54 @@
 
 </div>
     
+<!-- ================= Staff Page ================= -->
 <div id="staffPage" class="page" style="display:none">
 
 <h2>Staff Management</h2>
 
-<!-- Add Staff Form -->
 <div class="card">
-    <h3>Add Staff</h3>
-    <input type="email" id="staffEmail" placeholder="Staff Email">
-    <input type="password" id="staffPassword" placeholder="Password">
-    <select id="staffRole">
-        <option value="reception">Reception</option>
-        <option value="kitchen">Kitchen</option>
-        <option value="barman">Barman</option>
-        <option value="worker">Worker</option>
-        <option value="manager">Manager</option>
-    </select>
-    <button onclick="addStaff()">Add Staff</button>
+
+<h3>Add Staff</h3>
+
+<input type="email" id="staffEmail" placeholder="Staff Email">
+
+<!-- Modern Password Toggle -->
+<div class="passwordWrapper">
+<input type="password" id="staffPassword" placeholder="Password">
+<span id="toggleStaffPassword" title="Show/Hide Password">👁️</span>
 </div>
 
-<!-- Staff List Cards -->
+<select id="staffRole">
+<option value="reception">Reception</option>
+<option value="kitchen">Kitchen</option>
+<option value="barman">Barman</option>
+<option value="worker">Worker</option>
+<option value="manager">Manager</option>
+</select>
+
+<button onclick="addStaff()">Add Staff</button>
+
+</div>
+
 <h3>Staff List</h3>
+
 <div id="staffList" class="cardWrap"></div>
 
 </div>
 
+<!-- Staff Password Toggle Script -->
+<script>
+const toggleStaffPassword = document.getElementById("toggleStaffPassword");
+const staffPassword = document.getElementById("staffPassword");
+
+toggleStaffPassword.addEventListener("click", function () {
+    const type = staffPassword.getAttribute("type") === "password" ? "text" : "password";
+    staffPassword.setAttribute("type", type);
+
+    this.textContent = type === "password" ? "👁️" : "🙈";
+});
+</script>
+    
 <div id="finance" class="page" style="display:none">
 
 <h2>Hotel Finance Dashboard</h2>
