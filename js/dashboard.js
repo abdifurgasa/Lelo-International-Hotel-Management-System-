@@ -1,28 +1,67 @@
-function loadPage(pageId) {
-    document.querySelectorAll(".page").forEach(p => p.style.display = "none");
-    const page = document.getElementById(pageId);
-    if(page) page.style.display = "block";
+// PAGE SWITCH SYSTEM
+
+function loadPage(pageId){
+
+const pages = document.querySelectorAll(".page")
+
+pages.forEach(page=>{
+page.style.display="none"
+})
+
+document.getElementById(pageId).style.display="block"
+
 }
 
-// Auto-load Rooms page by default
-loadPage('roomsPage');
 
-document.getElementById("todayDate").innerText = new Date().toLocaleDateString();
+// DASHBOARD MENU TOGGLE
 
-// Submenu toggle
-const dashboardTitle = document.querySelector(".menuTitle");
-const dashboardSubmenu = document.getElementById("dashboardSubmenu");
+const dashboardToggle = document.getElementById("dashboardToggle")
+const dashboardMenu = document.getElementById("dashboardMenu")
 
-dashboardTitle.addEventListener("click", () => {
-    dashboardSubmenu.style.display = dashboardSubmenu.style.display === "block" ? "none" : "block";
-});
-document.addEventListener("click", e => {
-    if(!dashboardTitle.contains(e.target) && !dashboardSubmenu.contains(e.target)){
-        dashboardSubmenu.style.display = "none";
-    }
-});
+dashboardToggle.addEventListener("click", function(){
 
-// Logout
-function logout() {
-    if(confirm("Do you want to logout?")) alert("Logged out successfully!");
+if(dashboardMenu.style.display==="block"){
+
+dashboardMenu.style.display="none"
+
+}else{
+
+dashboardMenu.style.display="block"
+
+}
+
+})
+
+
+// STAFF PASSWORD TOGGLE
+
+const toggleStaffPassword=document.getElementById("toggleStaffPassword")
+
+const staffPassword=document.getElementById("staffPassword")
+
+toggleStaffPassword.addEventListener("click",function(){
+
+const type=staffPassword.getAttribute("type")==="password"?"text":"password"
+
+staffPassword.setAttribute("type",type)
+
+this.textContent=type==="password"?"👁️":"🙈"
+
+})
+
+
+// TODAY DATE
+
+document.getElementById("todayDate").innerText=
+new Date().toDateString()
+
+
+// LOGOUT
+
+function logout(){
+
+localStorage.removeItem("leloUser")
+
+window.location.href="login.html"
+
 }
