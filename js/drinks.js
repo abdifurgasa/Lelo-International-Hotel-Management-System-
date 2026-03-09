@@ -1,116 +1,47 @@
 import { db } from "./firebase.js";
 import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* ===============================
-LOAD DRINKS
-=============================== */
-window.loadDrinks = async function() {
-    const list = document.getElementById("drinkMenuList");
-    if (!list) return;
-    list.innerHTML = "";
+// Load drinks
+export async function loadDrinks() {
+    const drinkList = document.getElementById("drinkMenuList");
+    drinkList.innerHTML = "";
+    const drinksSnap = await getDocs(collection(db, "drinks"));
 
-    try {
-        const drinkSnap = await getDocs(collection(db, "drinks"));
-        drinkSnap.forEach(docSnap => {
-            const drink = docSnap.data();
-            const div = document.createElement("div");
-            div.className = "roomCard"; // reuse card style
-            div.innerHTML = `
-                <img src="${drink.photo || 'img/default-drink.jpg'}" alt="Drink">
-                <h4>${drink.name}</h4>
-                <p>Price: $${drink.price}</p>
-            `;
-
-            div.onclick = () => orderItem(docSnap.id, drink, "drink");
-            list.appendChild(div);
+    drinksSnap.forEach(drink => {
+        const data = drink.data();
+        const card = document.createElement("div");
+        card.className = "cardItem";
+        card.innerHTML = `
+            <img src="${data.photo || 'https://via.placeholder.com/180'}" />
+            <h4>${data.name}</h4>
+            <p>$${data.price}</p>
+        `;
+        // Click to order
+        card.addEventListener("click", async () => {
+            await addDoc(collection(db, "billing"), {
+                guest: "Guest",
+                type: "drink",
+                item: data.name,
+                price: data.price,
+                status: "Pending",
+                payment: "Cash",
+                date: new Date().toISOString()
+            });
+            alert(`${data.name} ordered!`);
         });
-    } catch (err) {
-        console.log("Load drinks error:", err);
-    }
-};
-
-/* ===============================
-ADD DRINK
-=============================== */
-window.addDrink = async function() {
-    const name = document.getElementById("drinkName").value.trim();
-    const price = document.getElementById("drinkPrice").value;
-    const photoInput = document.getElementById("drinkPhoto");
-
-    if (!name || !price) {
-        alert("Please fill all fields");
-        return;
-    }
-
-    let photoUrl = "";
-    if (photoInput && photoInput.files.length > 0) {
-        const file = photoInput.files[0];
-        photoUrl = await toBase64(file);
-    }
-
-    try {
-        await addDoc(collection(db, "drinks"), {
-            name,
-            price: Number(price),
-            photo: photoUrl
-        });
-
-        alert("Drink added!");
-        document.getElementById("drinkName").value = "";
-        document.getElementById("drinkPrice").value = "";
-        photoInput.value = "";
-
-        loadDrinks();
-    } catch (err) {
-        console.log(err);
-        alert("Failed to add drink");
-    }
-};
-
-/* ===============================
-ORDER DRINK
-=============================== */
-async function orderItem(itemId, itemData, type) {
-    const guest = prompt("Guest Name / Email?");
-    if (!guest) return;
-
-    const payment = prompt("Payment Method? (cash / transfer)").toLowerCase();
-    if (payment !== "cash" && payment !== "transfer") {
-        alert("Invalid payment method. Use 'cash' or 'transfer'");
-        return;
-    }
-
-    try {
-        await addDoc(collection(db, "billing"), {
-            itemId,
-            itemType: type,
-            name: itemData.name,
-            price: itemData.price,
-            guest,
-            status: "Paid",
-            paymentMethod: payment
-        });
-
-        alert(`${type} ordered and paid! Billing added.`);
-    } catch (err) {
-        console.log(err);
-        alert("Order failed");
-    }
-}
-
-/* ===============================
-HELPER: convert photo to Base64
-=============================== */
-function toBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
+        drinkList.appendChild(card);
     });
 }
 
-/* ===============================
-AUTO LOAD DRINK LIST
-=============================== */
-loadDrinks();
+// Add Drink
+export async function addDrink() {
+    const name = document.getElementById("drinkName").value;
+    const price = parseFloat(document.getElementById("drinkPrice").value);
+    const photo = document.getElementById("drinkPhoto").files[0] ? URL.createObjectURL(document.getElementById("drinkPhoto").files[0]) : '';
+
+    if (!name || !price) return alert("Fill all fields");
+
+    await addDoc(collection(db, "drinks"), { name, price, photo });
+    alert("Drink added!");
+    loadDrinks();
+}
