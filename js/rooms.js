@@ -1,49 +1,42 @@
 import { db } from "./firebase.js";
-import {
-collection,
-addDoc,
-getDocs
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
+import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 /* ===============================
 LOAD ROOM LIST
 =============================== */
-
 window.loadRooms = async function() {
+    const roomList = document.getElementById("roomList");
+    if (!roomList) return;
 
-    const roomTable = document.getElementById("roomTable");
-    if (!roomTable) return;
-
-    roomTable.innerHTML = ""; // clear table
+    roomList.innerHTML = ""; // clear previous cards
 
     try {
         const roomsSnap = await getDocs(collection(db, "rooms"));
         roomsSnap.forEach(doc => {
             const room = doc.data();
-            const tr = document.createElement("tr");
+            const div = document.createElement("div");
+            div.className = "roomCard";
 
-            tr.innerHTML = `
-                <td>${room.photo ? `<img src="${room.photo}" width="50">` : ""}</td>
-                <td>${room.number}</td>
-                <td>${room.type}</td>
-                <td>${room.price}</td>
-                <td>${room.status || "Available"}</td>
+            div.innerHTML = `
+                <img src="${room.photo || 'img/default-room.jpg'}" alt="Room">
+                <h4>Room ${room.number}</h4>
+                <p>Type: ${room.type}</p>
+                <p>Price: $${room.price}</p>
             `;
-            roomTable.appendChild(tr);
+
+            // Click to book
+            div.onclick = () => bookRoom(doc.id, room);
+            roomList.appendChild(div);
         });
-    } catch (error) {
-        console.log("Load rooms error:", error);
+    } catch (err) {
+        console.log("Load rooms error:", err);
     }
 };
-
 
 /* ===============================
 ADD ROOM
 =============================== */
-
 window.addRoom = async function() {
-
     const number = document.getElementById("roomNumber").value.trim();
     const type = document.getElementById("roomType").value;
     const price = document.getElementById("roomPrice").value;
@@ -54,7 +47,6 @@ window.addRoom = async function() {
         return;
     }
 
-    /* Optional: convert photo to base64 */
     let photoUrl = "";
     if (photoInput && photoInput.files.length > 0) {
         const file = photoInput.files[0];
@@ -63,34 +55,52 @@ window.addRoom = async function() {
 
     try {
         await addDoc(collection(db, "rooms"), {
-            number: number,
-            type: type,
+            number,
+            type,
             price: Number(price),
             photo: photoUrl,
             status: "Available"
         });
 
         alert("Room added successfully!");
-
-        // Clear input
         document.getElementById("roomNumber").value = "";
         document.getElementById("roomPrice").value = "";
         photoInput.value = "";
 
-        // Reload room list
         loadRooms();
-
-    } catch (error) {
-        console.log("Add room error:", error);
+    } catch (err) {
+        console.log(err);
         alert("Failed to add room");
     }
 };
 
+/* ===============================
+BOOK ROOM
+=============================== */
+async function bookRoom(roomId, roomData) {
+    const guest = prompt("Guest Name / Email?");
+    if (!guest) return;
+
+    try {
+        await addDoc(collection(db, "billing"), {
+            itemId: roomId,
+            itemType: "room",
+            name: `Room ${roomData.number}`,
+            price: roomData.price,
+            guest: guest,
+            status: "Pending"
+        });
+
+        alert("Room booked! Billing added.");
+    } catch (err) {
+        console.log(err);
+        alert("Booking failed");
+    }
+}
 
 /* ===============================
-HELPER: convert file to Base64
+HELPER: convert photo to Base64
 =============================== */
-
 function toBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -100,9 +110,7 @@ function toBase64(file) {
     });
 }
 
-
 /* ===============================
 AUTO LOAD ROOM LIST
 =============================== */
-
 loadRooms();
