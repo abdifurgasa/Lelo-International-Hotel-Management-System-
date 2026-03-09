@@ -1,5 +1,5 @@
 import { db } from "./firebase.js";
-import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 /* ===============================
 LOAD STAFF LIST
@@ -11,10 +11,10 @@ window.loadStaff = async function() {
 
     try {
         const staffSnap = await getDocs(collection(db, "users"));
-        staffSnap.forEach(doc => {
-            const staff = doc.data();
+        staffSnap.forEach(docSnap => {
+            const staff = docSnap.data();
             const div = document.createElement("div");
-            div.className = "roomCard"; // reuse style
+            div.className = "roomCard"; // reuse card style
             div.innerHTML = `
                 <h4>${staff.email}</h4>
                 <p>Role: ${staff.role}</p>
@@ -42,7 +42,7 @@ window.addStaff = async function() {
     try {
         await addDoc(collection(db, "users"), {
             email,
-            password, // In production, password should be hashed!
+            password, // NOTE: For real apps, password should be hashed
             role
         });
 
