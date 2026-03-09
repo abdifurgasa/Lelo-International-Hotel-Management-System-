@@ -14,20 +14,22 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <h2>Lelo International Hotel</h2>
-    <ul>
-        <li id="dashboardMenu">Dashboard</li>
-        <ul id="dashboardSubmenu" class="submenu">
-            <li onclick="loadPage('rooms')">Rooms</li>
-            <li onclick="loadPage('orderPage')">Orders</li>
-            <li onclick="loadPage('billing')">Billing</li>
-            <li onclick="loadPage('restaurant')">Restaurant</li>
-            <li onclick="loadPage('drinks')">Drinks</li>
-            <li onclick="loadPage('staffPage')">Staff Management</li>
-            <li onclick="loadPage('finance')">Finance</li>
-        </ul>
-        <li onclick="logout()">Logout</li>
-    </ul>
+  <h2>Lelo International Hotel</h2>
+  <ul>
+    <li class="menuItem">
+      <span class="menuTitle">Dashboard</span>
+      <ul class="submenu">
+        <li onclick="loadPage('rooms')">Rooms</li>
+        <li onclick="loadPage('orderPage')">Orders</li>
+        <li onclick="loadPage('billing')">Billing</li>
+        <li onclick="loadPage('restaurant')">Restaurant</li>
+        <li onclick="loadPage('drinks')">Drinks</li>
+        <li onclick="loadPage('staffPage')">Staff Management</li>
+        <li onclick="loadPage('finance')">Finance</li>
+      </ul>
+    </li>
+    <li onclick="logout()" class="logoutBtn">Logout</li>
+  </ul>
 </div>
 
 <!-- Content Area -->
