@@ -62,6 +62,23 @@ SIDEBAR
 .sidebar ul li:hover {
     background: rgba(255, 255, 255, 0.2);
 }
+
+/* =========================
+LOGOUT BUTTON
+========================= */
+.sidebar ul li:last-child {
+    background: #FF4C4C;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    transition: 0.3s;
+}
+.sidebar ul li:last-child:hover {
+    background: #CC0000;
+    cursor: pointer;
+}
+
+/* Submenu */
 .submenu {
     display: none;
     list-style: none;
