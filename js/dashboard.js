@@ -128,7 +128,11 @@ window.loadPage = async function(pageId) {
                 loadFinance();
             }
         }
-
+       if(pageId === "billing"){
+          if(typeof loadBilling === "function"){
+              loadBilling();
+    }
+}
     } catch (error) {
         console.log("Page load error:", error);
     }
