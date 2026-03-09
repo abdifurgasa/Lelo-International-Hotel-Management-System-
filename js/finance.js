@@ -1,41 +1,76 @@
-window.loadFinanceChart = function(){
+import { db } from "./firebase.js";
 
-let rooms = JSON.parse(localStorage.getItem("rooms")) || [];
-let foods = JSON.parse(localStorage.getItem("foods")) || [];
-let drinks = JSON.parse(localStorage.getItem("drinks")) || [];
+import {
+collection,
+getDocs
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-let roomIncome = rooms.reduce((a,b)=>a+Number(b.price||0),0);
-let foodIncome = foods.reduce((a,b)=>a+Number(b.price||0),0);
-let drinkIncome = drinks.reduce((a,b)=>a+Number(b.price||0),0);
+
+window.loadFinance = async function(){
+
+let roomRevenue = 0;
+let foodRevenue = 0;
+let drinkRevenue = 0;
+
+try{
+
+/* ROOM PAYMENTS */
+
+const roomSnap = await getDocs(collection(db,"roomPayments"));
+
+roomSnap.forEach(doc=>{
+roomRevenue += Number(doc.data().amount);
+});
+
+
+/* FOOD ORDERS */
+
+const foodSnap = await getDocs(collection(db,"foodOrders"));
+
+foodSnap.forEach(doc=>{
+foodRevenue += Number(doc.data().price);
+});
+
+
+/* DRINK ORDERS */
+
+const drinkSnap = await getDocs(collection(db,"drinkOrders"));
+
+drinkSnap.forEach(doc=>{
+drinkRevenue += Number(doc.data().price);
+});
+
+
+let totalRevenue = roomRevenue + foodRevenue + drinkRevenue;
+
+
+/* UPDATE CARDS */
+
+document.getElementById("totalRevenue").innerText = totalRevenue;
+document.getElementById("roomRevenue").innerText = roomRevenue;
+document.getElementById("foodRevenue").innerText = foodRevenue;
+document.getElementById("drinkRevenue").innerText = drinkRevenue;
+
+
+/* CREATE CHART */
 
 const ctx = document.getElementById("revenueChart");
 
-if(!ctx) return;
-
-new Chart(ctx, {
-type:"pie",
-
+new Chart(ctx,{
+type:"bar",
 data:{
 labels:["Rooms","Food","Drinks"],
-
 datasets:[{
-data:[roomIncome,foodIncome,drinkIncome],
-
-backgroundColor:[
-"#2c7be5",
-"#28a745",
-"#ffc107"
-]
-
+label:"Revenue",
+data:[roomRevenue,foodRevenue,drinkRevenue]
 }]
-},
-
-options:{
-responsive:true
 }
-
 });
 
-};
+}catch(error){
 
-loadFinanceChart();
+console.log("Finance error:",error);
+
+}
+
+}
