@@ -1,22 +1,48 @@
 export const en = {
 
-dashboard: "Dashboard",
-rooms: "Rooms",
-restaurant: "Restaurant",
-drinks: "Drinks",
-billing: "Billing",
-finance: "Finance",
-logout: "Logout",
+  // Sidebar & Dashboard
+  dashboard: "Dashboard",
+  rooms: "Rooms",
+  restaurant: "Restaurant",
+  drinks: "Drinks",
+  billing: "Billing",
+  finance: "Finance",
+  logout: "Logout",
 
-totalRooms: "Total Rooms",
-occupiedRooms: "Occupied Rooms",
-todayOrders: "Today's Orders",
-todayRevenue: "Today's Revenue",
+  // Stats Cards
+  totalRooms: "Total Rooms",
+  occupiedRooms: "Occupied Rooms",
+  todayOrders: "Today's Orders",
+  todayRevenue: "Today's Revenue",
 
-addRoom: "Add Room",
-addFood: "Add Food",
-addDrink: "Add Drink",
+  // Rooms
+  addRoom: "Add Room",
+  bookRoom: "Book Room",
+  checkIn: "Check In",
+  checkOut: "Check Out",
 
-staffManagement: "Staff Management"
+  // Restaurant / Drinks
+  addFood: "Add Food",
+  addDrink: "Add Drink",
+  price: "Price",
+  order: "Order",
+
+  // Billing
+  guest: "Guest",
+  paymentMethod: "Payment Method",
+  cash: "Cash",
+  transfer: "Transfer",
+
+  // Staff
+  staffManagement: "Staff Management",
+  fullName: "Full Name",
+  password: "Password",
+  role: "Role",
+
+  // Finance
+  totalRevenue: "Total Revenue",
+  roomRevenue: "Room Revenue",
+  foodRevenue: "Food Revenue",
+  drinkRevenue: "Drink Revenue"
 
 };
