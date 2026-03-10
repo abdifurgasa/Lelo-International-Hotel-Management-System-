@@ -1,63 +1,62 @@
+// staff.js
 import { db } from "./firebase.js";
-import { collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* ===============================
-LOAD STAFF LIST
-=============================== */
-window.loadStaff = async function() {
-    const list = document.getElementById("staffList");
-    if (!list) return;
-    list.innerHTML = "";
+const staffListEl = document.getElementById("staffList");
 
-    try {
-        const staffSnap = await getDocs(collection(db, "users"));
-        staffSnap.forEach(docSnap => {
-            const staff = docSnap.data();
-            const div = document.createElement("div");
-            div.className = "roomCard"; // reuse card style
-            div.innerHTML = `
-                <h4>${staff.email}</h4>
-                <p>Role: ${staff.role}</p>
-            `;
-            list.appendChild(div);
-        });
-    } catch (err) {
-        console.log("Load staff error:", err);
-    }
-};
-
-/* ===============================
-ADD STAFF
-=============================== */
-window.addStaff = async function() {
-    const email = document.getElementById("staffEmail").value.trim();
-    const password = document.getElementById("staffPassword").value.trim();
+// Add Staff
+export async function addStaff() {
+    const email = document.getElementById("staffEmail").value;
+    const password = document.getElementById("staffPassword").value;
     const role = document.getElementById("staffRole").value;
 
-    if (!email || !password || !role) {
-        alert("Please fill all fields");
-        return;
-    }
+    if (!email || !password || !role) return alert("Fill all fields");
 
-    try {
-        await addDoc(collection(db, "users"), {
-            email,
-            password, // NOTE: For real apps, password should be hashed
-            role
-        });
+    await addDoc(collection(db, "staff"), {
+        email,
+        password,
+        role,
+        fullName,
+        photoURL: email.split("@")[0] // simple example for full name
+    });
 
-        alert("Staff added successfully!");
-        document.getElementById("staffEmail").value = "";
-        document.getElementById("staffPassword").value = "";
+    alert("Staff added!");
+    loadStaff();
+}
 
-        loadStaff();
-    } catch (err) {
-        console.log(err);
-        alert("Failed to add staff");
-    }
-};
+// Load Staff List
+export async function loadStaff() {
+    staffListEl.innerHTML = "";
+    const snapshot = await getDocs(collection(db, "staff"));
+    snapshot.forEach(docSnap => {
+        const staff = docSnap.data();
+        const card = document.createElement("div");
+        card.className = "cardItem";
+        card.innerHTML = `
+            <h4>${staff.fullName}</h4>
+            <p>Email: ${staff.email}</p>
+            <p>Role: ${staff.role}</p>
+            <button onclick="deleteStaff('${docSnap.id}')">Delete</button>
+        `;
+        staffListEl.appendChild(card);
+    });
+}
 
-/* ===============================
-AUTO LOAD STAFF LIST
-=============================== */
-loadStaff();
+// Delete Staff
+export async function deleteStaff(staffId) {
+    const confirmDelete = confirm("Delete this staff?");
+    if (!confirmDelete) return;
+    await deleteDoc(doc(db, "staff", staffId));
+    alert("Staff deleted!");
+    loadStaff();
+}
+
+// Password show/hide toggle
+const toggleStaffPassword = document.getElementById("toggleStaffPassword");
+const staffPassword = document.getElementById("staffPassword");
+
+toggleStaffPassword.addEventListener("click", function() {
+    const type = staffPassword.getAttribute("type") === "password" ? "text" : "password";
+    staffPassword.setAttribute("type", type);
+    this.textContent = type === "password" ? "👁️" : "🙈";
+});
