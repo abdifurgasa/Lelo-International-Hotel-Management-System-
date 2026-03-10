@@ -1,22 +1,22 @@
-{
-"hotelName":"Lelo International Hotel",
+export const en = {
 
-"login":"Login",
-"email":"Email",
-"password":"Password",
+dashboard: "Dashboard",
+rooms: "Rooms",
+restaurant: "Restaurant",
+drinks: "Drinks",
+billing: "Billing",
+finance: "Finance",
+logout: "Logout",
 
-"dashboard":"Dashboard",
-"rooms":"Rooms",
-"booking":"Booking",
-"finance":"Finance",
+totalRooms: "Total Rooms",
+occupiedRooms: "Occupied Rooms",
+todayOrders: "Today's Orders",
+todayRevenue: "Today's Revenue",
 
-"addRoom":"Add Room",
-"roomNumber":"Room Number",
-"roomType":"Room Type",
-"roomPrice":"Room Price",
+addRoom: "Add Room",
+addFood: "Add Food",
+addDrink: "Add Drink",
 
-"single":"Single",
-"double":"Double",
-"deluxe":"Deluxe",
-"vip":"VIP"
-}
+staffManagement: "Staff Management"
+
+};
