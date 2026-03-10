@@ -1,112 +1,73 @@
-import { db, storage } from './firebase.js';
-import { collection, addDoc, getDocs, updateDoc, doc } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { updateStats } from './dashboard.js';
+// rooms.js
+import { db } from "./firebase.js";
+import { collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { updateFinance } from "./finance.js"; // import finance
 
-const roomList = document.getElementById("roomList");
-const roomNumberInput = document.getElementById("roomNumber");
-const roomTypeInput = document.getElementById("roomType");
-const roomPriceInput = document.getElementById("roomPrice");
-const roomPhotoInput = document.getElementById("roomPhoto");
+const roomListEl = document.getElementById("roomList");
 
-// Add Room
-window.addRoom = async function() {
-    const number = roomNumberInput.value.trim();
-    const type = roomTypeInput.value;
-    const price = parseFloat(roomPriceInput.value);
-    const file = roomPhotoInput.files[0];
+export async function addRoom() {
+    const number = document.getElementById("roomNumber").value;
+    const type = document.getElementById("roomType").value;
+    const price = parseFloat(document.getElementById("roomPrice").value);
+    const photo = document.getElementById("roomPhoto").files[0];
 
-    if (!number || !type || !price || !file) {
-        alert("Please fill all fields and select a photo.");
-        return;
-    }
+    if(!number || !type || !price || !photo) return alert("Fill all fields");
 
-    try {
-        const photoRef = ref(storage, `rooms/${file.name}_${Date.now()}`);
-        await uploadBytes(photoRef, file);
-        const photoURL = await getDownloadURL(photoRef);
+    // Upload photo to Firebase Storage (optional, simplified as URL for now)
+    const photoURL = URL.createObjectURL(photo);
 
-        await addDoc(collection(db, "rooms"), {
-            number,
-            type,
-            price,
-            photoURL,
-            status: "available"
-        });
+    await addDoc(collection(db, "rooms"), {
+        number, type, price, photoURL, status: "Available"
+    });
 
-        roomNumberInput.value = "";
-        roomPriceInput.value = "";
-        roomPhotoInput.value = "";
+    loadRooms();
+}
 
-        loadRooms();
-        updateStats();
-
-    } catch (err) {
-        console.error(err);
-        alert("Error adding room: " + err.message);
-    }
-};
-
-// Load Rooms
+// Load all rooms
 export async function loadRooms() {
-    roomList.innerHTML = "";
-    const roomsSnapshot = await getDocs(collection(db, "rooms"));
-
-    roomsSnapshot.forEach(docSnap => {
-        const room = docSnap.data();
-        const roomId = docSnap.id;
-
+    roomListEl.innerHTML = "";
+    const snapshot = await getDocs(collection(db, "rooms"));
+    snapshot.forEach(docSnap => {
+        const data = docSnap.data();
         const card = document.createElement("div");
-        card.className = "cardItem"; // Wrapped card
-
+        card.className = "cardItem";
         card.innerHTML = `
-            <img src="${room.photoURL}" alt="Room ${room.number}">
-            <h4>${room.type} - ${room.number}</h4>
-            <p>Price: $${room.price}</p>
-            <p>Status: <strong>${room.status}</strong></p>
-            <button onclick="bookRoom('${roomId}', '${room.number}')">
-                ${room.status === 'available' ? 'Book Room' : 'Check Out'}
-            </button>
+            <img src="${data.photoURL}" alt="${data.type}">
+            <h4>${data.type} - ${data.number}</h4>
+            <p>Price: $${data.price}</p>
+            <p>Status: ${data.status}</p>
         `;
-
-        roomList.appendChild(card);
+        // Click to book
+        card.addEventListener("click", () => bookRoom(docSnap.id, data));
+        roomListEl.appendChild(card);
     });
 }
 
-// Book Room / Check Out
-window.bookRoom = async function(roomId, roomNumber) {
-    const roomDocRef = doc(db, "rooms", roomId);
-    const roomSnap = await getDocs(collection(db, "rooms"));
+// Book room function
+async function bookRoom(id, room) {
+    if(room.status === "Occupied") return alert("Room already booked");
 
-    const roomDoc = await getDocs(doc(db, "rooms", roomId));
-    const room = (await getDocs(doc(db, "rooms", roomId))).data();
+    const confirmBooking = confirm(`Book ${room.type} Room #${room.number} for $${room.price}?`);
+    if(!confirmBooking) return;
 
-    if (!room) return;
+    // Add to Guest Service billing
+    const guestUser = "guest_service"; // your guest services user id/email
+    await addDoc(collection(db, "billing"), {
+        user: guestUser,
+        item: `${room.type} Room #${room.number}`,
+        type: "room",
+        price: room.price,
+        status: "Pending",
+        paymentMethod: "",
+        timestamp: new Date()
+    });
 
-    if (room.status === "available") {
-        const guestName = prompt("Enter Guest Service Name for booking:");
-        if (!guestName) return;
+    // Mark room as occupied
+    const roomRef = doc(db, "rooms", id);
+    await updateDoc(roomRef, { status: "Occupied" });
 
-        await updateDoc(roomDocRef, { status: "occupied" });
+    alert("Room booked! Added to Guest Service Billing.");
 
-        await addDoc(collection(db, "billing"), {
-            guest: guestName,
-            item: `Room ${room.number}`,
-            type: "room",
-            price: room.price,
-            status: "unpaid",
-            paymentMethod: null,
-            date: new Date().toISOString().split('T')[0]
-        });
-
-        alert(`Room ${room.number} booked! Billing added for ${guestName}.`);
-    } else {
-        await updateDoc(roomDocRef, { status: "available" });
-        alert(`Room ${room.number} is now available.`);
-    }
-
+    // Reload rooms
     loadRooms();
-    updateStats();
-};
-
-document.addEventListener("DOMContentLoaded", loadRooms);
+}
