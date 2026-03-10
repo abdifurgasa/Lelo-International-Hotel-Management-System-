@@ -1,20 +1,49 @@
-export const om = {
-
-hotelName: "Hoteela Intarnaashinaalii Leelloo",
-
-loginTitle: "Sirna Bulchiinsa Hoteelaa",
-email: "Imeelii",
-password: "Jecha Darbii/Icciitii",
-login: "Seeni",
+export const or = {
 
 dashboard: "Daashboordii",
-rooms: "Kutaalee",
-booking: "Qabsiisa",
-food: "Nyaata",
-drink: "Dhugaatii",
-billing: "Kaffaltii Herrega",
+
+rooms: "Kutaa",
+
+restaurant: "Mana Nyaataa",
+
+drinks: "Dhugaatii",
+
+billing: "Herrega",
+
 finance: "Faayinaansii",
 
-logout: "Ba'i"
+logout: "Ba'i",
+
+totalRooms: "Walitti Kutaa",
+
+occupiedRooms: "Kutaa Qabame",
+
+todayOrders: "Ajaja Har'a",
+
+todayRevenue: "Galii Har'a",
+
+addRoom: "Kutaa Dabaluu",
+
+addFood: "Nyaata Dabaluu",
+
+addDrink: "Dhugaatii Dabaluu",
+
+staffManagement: "Bulchiinsa Hojjettootaa",
+
+guest: "Keessummaa",
+
+price: "Gatii",
+
+paymentMethod: "Mala Kaffaltii",
+
+cash: "Maallaqa Caalbaasii",
+
+transfer: "Baankii",
+
+bookRoom: "Kutaa Qabsiisuu",
+
+checkIn: "Seensa",
+
+checkOut: "Ba'iinsa"
 
 };
