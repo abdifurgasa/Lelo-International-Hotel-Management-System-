@@ -1,19 +1,15 @@
-// rooms.js
 import { db, storage } from './firebase.js';
 import { collection, addDoc, getDocs, updateDoc, doc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { updateStats } from './dashboard.js';
 
-// Reference DOM elements
 const roomList = document.getElementById("roomList");
 const roomNumberInput = document.getElementById("roomNumber");
 const roomTypeInput = document.getElementById("roomType");
 const roomPriceInput = document.getElementById("roomPrice");
 const roomPhotoInput = document.getElementById("roomPhoto");
 
-// --------------------------
-// ADD ROOM
-// --------------------------
+// Add Room
 window.addRoom = async function() {
     const number = roomNumberInput.value.trim();
     const type = roomTypeInput.value;
@@ -26,12 +22,10 @@ window.addRoom = async function() {
     }
 
     try {
-        // Upload photo to Firebase Storage
         const photoRef = ref(storage, `rooms/${file.name}_${Date.now()}`);
         await uploadBytes(photoRef, file);
         const photoURL = await getDownloadURL(photoRef);
 
-        // Add room to Firestore
         await addDoc(collection(db, "rooms"), {
             number,
             type,
@@ -40,14 +34,10 @@ window.addRoom = async function() {
             status: "available"
         });
 
-        alert("Room added successfully!");
-
-        // Clear form
         roomNumberInput.value = "";
         roomPriceInput.value = "";
         roomPhotoInput.value = "";
 
-        // Reload rooms
         loadRooms();
         updateStats();
 
@@ -57,23 +47,23 @@ window.addRoom = async function() {
     }
 };
 
-// --------------------------
-// LOAD ROOMS
-// --------------------------
+// Load Rooms
 export async function loadRooms() {
     roomList.innerHTML = "";
     const roomsSnapshot = await getDocs(collection(db, "rooms"));
+
     roomsSnapshot.forEach(docSnap => {
         const room = docSnap.data();
         const roomId = docSnap.id;
 
         const card = document.createElement("div");
-        card.className = "cardItem";
+        card.className = "cardItem"; // Wrapped card
+
         card.innerHTML = `
             <img src="${room.photoURL}" alt="Room ${room.number}">
             <h4>${room.type} - ${room.number}</h4>
             <p>Price: $${room.price}</p>
-            <p>Status: ${room.status}</p>
+            <p>Status: <strong>${room.status}</strong></p>
             <button onclick="bookRoom('${roomId}', '${room.number}')">
                 ${room.status === 'available' ? 'Book Room' : 'Check Out'}
             </button>
@@ -83,13 +73,12 @@ export async function loadRooms() {
     });
 }
 
-// --------------------------
-// BOOK ROOM / CHECKOUT
-// --------------------------
+// Book Room / Check Out
 window.bookRoom = async function(roomId, roomNumber) {
     const roomDocRef = doc(db, "rooms", roomId);
     const roomSnap = await getDocs(collection(db, "rooms"));
 
+    const roomDoc = await getDocs(doc(db, "rooms", roomId));
     const room = (await getDocs(doc(db, "rooms", roomId))).data();
 
     if (!room) return;
@@ -98,10 +87,8 @@ window.bookRoom = async function(roomId, roomNumber) {
         const guestName = prompt("Enter Guest Service Name for booking:");
         if (!guestName) return;
 
-        // Update room status to occupied
         await updateDoc(roomDocRef, { status: "occupied" });
 
-        // Add billing for guest service
         await addDoc(collection(db, "billing"), {
             guest: guestName,
             item: `Room ${room.number}`,
@@ -114,7 +101,6 @@ window.bookRoom = async function(roomId, roomNumber) {
 
         alert(`Room ${room.number} booked! Billing added for ${guestName}.`);
     } else {
-        // Check out
         await updateDoc(roomDocRef, { status: "available" });
         alert(`Room ${room.number} is now available.`);
     }
@@ -123,7 +109,4 @@ window.bookRoom = async function(roomId, roomNumber) {
     updateStats();
 };
 
-// --------------------------
-// INIT
-// --------------------------
 document.addEventListener("DOMContentLoaded", loadRooms);
