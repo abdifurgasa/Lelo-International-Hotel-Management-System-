@@ -1,54 +1,65 @@
-import { db } from "./firebase.js";
-import { collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { db } from './firebase.js';
+import { collection, addDoc, getDocs, updateDoc, doc } from "firebase/firestore";
+import { updateFinance } from './finance.js';
+import { updateStats } from './dashboard.js';
 
-/* ===============================
-LOAD BILLING ITEMS
-=============================== */
-window.loadBilling = async function() {
-    const tbody = document.getElementById("billingList");
-    if (!tbody) return;
-    tbody.innerHTML = "";
+const billingList = document.getElementById("billingList");
 
-    try {
-        const billingSnap = await getDocs(collection(db, "billing"));
-        billingSnap.forEach(docSnap => {
-            const bill = docSnap.data();
-            const tr = document.createElement("tr");
+// Load all billing
+export async function loadBilling() {
+    billingList.innerHTML = "";
+    const snapshot = await getDocs(collection(db, "billing"));
 
-            tr.innerHTML = `
-                <td>${bill.guest}</td>
-                <td>${bill.name}</td>
-                <td>${bill.itemType}</td>
-                <td>$${bill.price}</td>
-                <td>${bill.status}</td>
-                <td>${bill.paymentMethod || ""}</td>
-                <td>
-                    ${bill.status === "Pending" ? `<button onclick="markPaid('${docSnap.id}')">Mark Paid</button>` : ""}
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-    } catch (err) {
-        console.log("Load billing error:", err);
+    snapshot.forEach(docSnap => {
+        const bill = docSnap.data();
+        const billId = docSnap.id;
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${bill.guest}</td>
+            <td>${bill.item}</td>
+            <td>${bill.type}</td>
+            <td>$${bill.price}</td>
+            <td>${bill.status}</td>
+            <td>${bill.paymentMethod ? bill.paymentMethod : "-"}</td>
+            <td>
+                ${bill.status === "unpaid" ? `<button onclick="payBill('${billId}')">Mark as Paid</button>` : ""}
+            </td>
+        `;
+
+        billingList.appendChild(row);
+    });
+}
+
+// Mark bill as paid
+window.payBill = async function(billId) {
+    const method = prompt("Enter payment method: cash or transfer").toLowerCase();
+    if (!method || (method !== "cash" && method !== "transfer")) {
+        alert("Invalid payment method. Use cash or transfer.");
+        return;
     }
-};
 
-/* ===============================
-MARK BILLING AS PAID
-=============================== */
-window.markPaid = async function(billId) {
     try {
         const billRef = doc(db, "billing", billId);
-        await updateDoc(billRef, { status: "Paid" });
-        alert("Billing marked as Paid!");
+        await updateDoc(billRef, {
+            status: "paid",
+            paymentMethod: method,
+            paidDate: new Date().toISOString().split('T')[0]
+        });
+
+        alert("Bill marked as paid!");
+
+        // Update finance module
+        updateFinance();
         loadBilling();
+        updateStats();
+
     } catch (err) {
-        console.log(err);
-        alert("Failed to update billing");
+        console.error(err);
+        alert("Error marking bill as paid: " + err.message);
     }
 };
 
-/* ===============================
-AUTO LOAD BILLING
-=============================== */
-loadBilling();
+// Initial load
+document.addEventListener("DOMContentLoaded", loadBilling);
