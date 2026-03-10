@@ -1,105 +1,50 @@
-import { db, auth } from "./firebase.js";
+// roleDashboard.js
+import { db } from "./firebase.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-import {
-collection,
-query,
-where,
-getDocs,
-updateDoc,
-doc
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-
-// Load Role Orders
-
-window.loadRoleOrders = async function(){
-
-const user = auth.currentUser;
-
-if(!user) return;
-
-const email = user.email;
-
-
-// ===== Food Orders =====
-
-const foodDiv = document.getElementById("foodOrders");
-foodDiv.innerHTML = "<h3>Food Orders</h3>";
-
-const foodQuery = query(
-collection(db,"orders"),
-where("type","==","food")
-);
-
-const foodSnapshot = await getDocs(foodQuery);
-
-foodSnapshot.forEach(docSnap=>{
-
-const data = docSnap.data();
-
-foodDiv.innerHTML += `
-<p>
-🍔 ${data.item} - ${data.price} birr
-<br>
-Status: ${data.status}
-
-<button onclick="completeOrder('${docSnap.id}')">
-Complete
-</button>
-
-</p>
-`;
-
-});
-
-
-// ===== Drink Orders =====
-
-const drinkDiv = document.getElementById("drinkOrders");
-drinkDiv.innerHTML = "<h3>Drink Orders</h3>";
-
-const drinkQuery = query(
-collection(db,"orders"),
-where("type","==","drink")
-);
-
-const drinkSnapshot = await getDocs(drinkQuery);
-
-drinkSnapshot.forEach(docSnap=>{
-
-const data = docSnap.data();
-
-drinkDiv.innerHTML += `
-<p>
-🥤 ${data.item} - ${data.price} birr
-<br>
-Status: ${data.status}
-
-<button onclick="completeOrder('${docSnap.id}')">
-Complete
-</button>
-
-</p>
-`;
-
-});
-
+const sidebarItems = {
+    dashboard: document.querySelector(".menuTitle"),
+    rooms: document.querySelector("li[onclick*='rooms']"),
+    orderPage: document.querySelector("li[onclick*='orderPage']"),
+    billing: document.querySelector("li[onclick*='billing']"),
+    restaurant: document.querySelector("li[onclick*='restaurant']"),
+    drinks: document.querySelector("li[onclick*='drinks']"),
+    staffPage: document.querySelector("li[onclick*='staffPage']"),
+    finance: document.querySelector("li[onclick*='finance']")
 };
 
+// Assume user is logged in
+export async function loadRoleDashboard(userId) {
+    const userDoc = await getDoc(doc(db, "staff", userId));
+    if (!userDoc.exists()) return alert("User not found");
+    
+    const user = userDoc.data();
+    const role = user.role;
 
-// Complete Order
+    // First hide everything
+    Object.values(sidebarItems).forEach(item => item.style.display = "none");
 
-window.completeOrder = async function(orderId){
+    // Manager sees all
+    if (role === "manager") {
+        Object.values(sidebarItems).forEach(item => item.style.display = "block");
+        return;
+    }
 
-await updateDoc(
-doc(db,"orders",orderId),
-{
-status:"completed"
+    // Other roles permissions
+    if (role === "reception") {
+        sidebarItems.dashboard.style.display = "block";
+        sidebarItems.rooms.style.display = "block";
+        sidebarItems.billing.style.display = "block";
+    }
+    if (role === "kitchen") {
+        sidebarItems.dashboard.style.display = "block";
+        sidebarItems.restaurant.style.display = "block";
+    }
+    if (role === "barman") {
+        sidebarItems.dashboard.style.display = "block";
+        sidebarItems.drinks.style.display = "block";
+    }
+    if (role === "worker") {
+        sidebarItems.dashboard.style.display = "block";
+    }
 }
-);
-
-alert("Order completed");
-
-loadRoleOrders();
-
-};
