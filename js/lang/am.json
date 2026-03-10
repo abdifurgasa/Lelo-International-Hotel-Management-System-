@@ -1,16 +1,49 @@
 export const am = {
 
 dashboard: "ዳሽቦርድ",
+
 rooms: "ክፍሎች",
+
 restaurant: "ሬስቶራንት",
+
 drinks: "መጠጦች",
+
 billing: "ቢሊንግ",
+
 finance: "ፋይናንስ",
+
 logout: "ውጣ",
 
 totalRooms: "ጠቅላላ ክፍሎች",
+
 occupiedRooms: "የተያዙ ክፍሎች",
+
 todayOrders: "የዛሬ ትዕዛዞች",
-todayRevenue: "የዛሬ ገቢ"
+
+todayRevenue: "የዛሬ ገቢ",
+
+addRoom: "ክፍል አክል",
+
+addFood: "ምግብ አክል",
+
+addDrink: "መጠጥ አክል",
+
+staffManagement: "የሰራተኞች አስተዳደር",
+
+guest: "እንግዳ",
+
+price: "ዋጋ",
+
+paymentMethod: "የክፍያ መንገድ",
+
+cash: "ገንዘብ",
+
+transfer: "ባንክ ዝውውር",
+
+bookRoom: "ክፍል ያዝ",
+
+checkIn: "ግባ",
+
+checkOut: "ውጣ"
 
 };
