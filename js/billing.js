@@ -1,7 +1,7 @@
 // billing.js
 import { db } from "./firebase.js";
 import { collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { updateFinance } from "./finance.js"; // finance updates
+import { loadFinance, updateFinance } from "./finance.js";
 
 const billingListEl = document.getElementById("billingList");
 
@@ -9,15 +9,15 @@ const billingListEl = document.getElementById("billingList");
 export async function loadBilling() {
     billingListEl.innerHTML = "";
     const snapshot = await getDocs(collection(db, "billing"));
-    snapshot.forEach(async (docSnap) => {
-        const data = docSnap.data();
+    snapshot.forEach(docSnap => {
+        const bill = docSnap.data();
         const tr = document.createElement("tr");
         tr.innerHTML = `
-            <td>${data.user}</td>
-            <td>${data.item}</td>
-            <td>${data.type}</td>
-            <td>$${data.price}</td>
-            <td>${data.status}</td>
+            <td>${bill.user}</td>
+            <td>${bill.item}</td>
+            <td>${bill.type}</td>
+            <td>$${bill.price}</td>
+            <td>${bill.status}</td>
             <td>
                 <select id="paymentMethod_${docSnap.id}">
                     <option value="">Select</option>
@@ -26,7 +26,7 @@ export async function loadBilling() {
                 </select>
             </td>
             <td>
-                <button onclick="payBill('${docSnap.id}', ${data.price})">Pay</button>
+                <button onclick="payBill('${docSnap.id}', ${bill.price})">Pay</button>
             </td>
         `;
         billingListEl.appendChild(tr);
@@ -39,16 +39,17 @@ export async function payBill(billId, amount) {
     const method = selectEl.value;
     if (!method) return alert("Please select payment method");
 
-    // Update bill status to Paid
     const billRef = doc(db, "billing", billId);
+
+    // Update bill status and payment method
     await updateDoc(billRef, {
         status: "Paid",
         paymentMethod: method
     });
 
-    // Update finance
+    // Update Finance module
     await updateFinance(amount, method);
 
-    alert("Bill paid and Finance updated!");
+    alert("Bill paid! Finance updated.");
     loadBilling();
 }
