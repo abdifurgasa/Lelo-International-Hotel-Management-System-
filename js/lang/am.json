@@ -1,22 +1,16 @@
-export const en = {
+export const am = {
 
-dashboard: "Dashboard",
-rooms: "Rooms",
-restaurant: "Restaurant",
-drinks: "Drinks",
-billing: "Billing",
-finance: "Finance",
-logout: "Logout",
+dashboard: "ዳሽቦርድ",
+rooms: "ክፍሎች",
+restaurant: "ሬስቶራንት",
+drinks: "መጠጦች",
+billing: "ቢሊንግ",
+finance: "ፋይናንስ",
+logout: "ውጣ",
 
-totalRooms: "Total Rooms",
-occupiedRooms: "Occupied Rooms",
-todayOrders: "Today's Orders",
-todayRevenue: "Today's Revenue",
-
-addRoom: "Add Room",
-addFood: "Add Food",
-addDrink: "Add Drink",
-
-staffManagement: "Staff Management"
+totalRooms: "ጠቅላላ ክፍሎች",
+occupiedRooms: "የተያዙ ክፍሎች",
+todayOrders: "የዛሬ ትዕዛዞች",
+todayRevenue: "የዛሬ ገቢ"
 
 };
