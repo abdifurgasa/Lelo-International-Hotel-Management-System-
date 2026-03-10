@@ -1,95 +1,61 @@
-import { db, storage } from './firebase.js';
-import { collection, addDoc, getDocs } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { updateStats } from './dashboard.js';
+// restaurant.js
+import { db } from "./firebase.js";
+import { collection, addDoc, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const foodNameInput = document.getElementById("foodName");
-const foodPriceInput = document.getElementById("foodPrice");
-const foodPhotoInput = document.getElementById("foodPhoto");
-const foodMenuList = document.getElementById("foodMenuList");
+const foodMenuListEl = document.getElementById("foodMenuList");
 
 // Add Food Item
-window.addFood = async function() {
-    const name = foodNameInput.value.trim();
-    const price = parseFloat(foodPriceInput.value);
-    const file = foodPhotoInput.files[0];
+export async function addFood() {
+    const name = document.getElementById("foodName").value;
+    const price = parseFloat(document.getElementById("foodPrice").value);
+    const photo = document.getElementById("foodPhoto").files[0];
 
-    if (!name || !price || !file) {
-        alert("Please fill all fields and select a photo.");
-        return;
-    }
+    if (!name || !price || !photo) return alert("Fill all fields");
 
-    try {
-        const photoRef = ref(storage, `food/${file.name}_${Date.now()}`);
-        await uploadBytes(photoRef, file);
-        const photoURL = await getDownloadURL(photoRef);
+    const photoURL = URL.createObjectURL(photo);
 
-        await addDoc(collection(db, "foods"), {
-            name,
-            price,
-            photoURL
-        });
+    await addDoc(collection(db, "foods"), {
+        name, price, photoURL
+    });
 
-        foodNameInput.value = "";
-        foodPriceInput.value = "";
-        foodPhotoInput.value = "";
+    loadFoodMenu();
+}
 
-        loadFoods();
-        updateStats();
-
-    } catch (err) {
-        console.error(err);
-        alert("Error adding food: " + err.message);
-    }
-};
-
-// Load Food Items
-export async function loadFoods() {
-    foodMenuList.innerHTML = "";
-    const foodsSnapshot = await getDocs(collection(db, "foods"));
-
-    foodsSnapshot.forEach(docSnap => {
-        const food = docSnap.data();
-        const foodId = docSnap.id;
-
+// Load Food Menu
+export async function loadFoodMenu() {
+    foodMenuListEl.innerHTML = "";
+    const snapshot = await getDocs(collection(db, "foods"));
+    snapshot.forEach(docSnap => {
+        const data = docSnap.data();
         const card = document.createElement("div");
         card.className = "cardItem";
-
         card.innerHTML = `
-            <img src="${food.photoURL}" alt="${food.name}">
-            <h4>${food.name}</h4>
-            <p>Price: $${food.price}</p>
-            <button onclick="orderFood('${foodId}', '${food.name}', ${food.price})">
-                Order
-            </button>
+            <img src="${data.photoURL}" alt="${data.name}">
+            <h4>${data.name}</h4>
+            <p>Price: $${data.price}</p>
         `;
-
-        foodMenuList.appendChild(card);
+        // Click to order
+        card.addEventListener("click", () => orderFood(docSnap.id, data));
+        foodMenuListEl.appendChild(card);
     });
 }
 
 // Order Food
-window.orderFood = async function(foodId, foodName, price) {
-    const guestName = prompt("Enter Guest Service Name for billing:");
-    if (!guestName) return;
+async function orderFood(id, food) {
+    const confirmOrder = confirm(`Order ${food.name} for $${food.price}?`);
+    if (!confirmOrder) return;
 
-    try {
-        await addDoc(collection(db, "billing"), {
-            guest: guestName,
-            item: foodName,
-            type: "food",
-            price: price,
-            status: "unpaid",
-            paymentMethod: null,
-            date: new Date().toISOString().split('T')[0]
-        });
+    const guestUser = "guest_service"; // guest service user id/email
 
-        alert(`Food "${foodName}" ordered! Billing added for ${guestName}.`);
-        updateStats();
-    } catch (err) {
-        console.error(err);
-        alert("Error ordering food: " + err.message);
-    }
-};
+    await addDoc(collection(db, "billing"), {
+        user: guestUser,
+        item: food.name,
+        type: "food",
+        price: food.price,
+        status: "Pending",
+        paymentMethod: "",
+        timestamp: new Date()
+    });
 
-document.addEventListener("DOMContentLoaded", loadFoods);
+    alert("Food ordered! Added to Guest Service Billing.");
+}
