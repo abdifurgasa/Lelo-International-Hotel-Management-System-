@@ -1,21 +1,22 @@
-export const am = {
+export const en = {
 
-hotelName: "ሌሎ ኢንተርናሽናል ሆቴል",
+dashboard: "Dashboard",
+rooms: "Rooms",
+restaurant: "Restaurant",
+drinks: "Drinks",
+billing: "Billing",
+finance: "Finance",
+logout: "Logout",
 
-loginTitle: "የሆቴል አስተዳደር ስርዓት",
+totalRooms: "Total Rooms",
+occupiedRooms: "Occupied Rooms",
+todayOrders: "Today's Orders",
+todayRevenue: "Today's Revenue",
 
-email: "ኢሜይል",
-password: "የይለፍ ቃል",
-login: "ግባ",
+addRoom: "Add Room",
+addFood: "Add Food",
+addDrink: "Add Drink",
 
-dashboard: "ዳሽቦርድ",
-rooms: "ክፍሎች",
-booking: "ማስያዝ",
-food: "ምግብ",
-drink: "መጠጥ",
-billing: "ክፍያ",
-finance: "ፋይናንስ",
-
-logout: "ውጣ"
+staffManagement: "Staff Management"
 
 };
