@@ -1,67 +1,84 @@
-// finance.js
-import { db } from "./firebase.js";
-import { getDocs, collection } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { db } from "./firebase.js"; // Firebase config
+import { setLanguage } from "./i18n.js";
 
+// DOM elements
 const totalRevenueEl = document.getElementById("totalRevenue");
 const roomRevenueEl = document.getElementById("roomRevenue");
 const foodRevenueEl = document.getElementById("foodRevenue");
 const drinkRevenueEl = document.getElementById("drinkRevenue");
 const revenueChartEl = document.getElementById("revenueChart");
 
-let revenueChart;
+let chartInstance = null;
 
-// Load finance data
-export async function loadFinance() {
-    let total = 0, roomTotal = 0, foodTotal = 0, drinkTotal = 0;
+// ==================== FETCH REVENUE ====================
+async function fetchRevenue() {
+    // Fetch finance document
+    const doc = await db.collection("finance").doc("revenue").get();
+    const data = doc.exists ? doc.data() : { rooms:0, food:0, drinks:0 };
 
-    const snapshot = await getDocs(collection(db, "billing"));
-    snapshot.forEach(docSnap => {
-        const bill = docSnap.data();
-        if (bill.status === "Paid") {
-            total += bill.price;
-            if (bill.type === "room") roomTotal += bill.price;
-            if (bill.type === "food") foodTotal += bill.price;
-            if (bill.type === "drink") drinkTotal += bill.price;
-        }
-    });
+    const total = (data.rooms||0) + (data.food||0) + (data.drinks||0);
 
-    totalRevenueEl.innerText = `$${total.toFixed(2)}`;
-    roomRevenueEl.innerText = `$${roomTotal.toFixed(2)}`;
-    foodRevenueEl.innerText = `$${foodTotal.toFixed(2)}`;
-    drinkRevenueEl.innerText = `$${drinkTotal.toFixed(2)}`;
+    totalRevenueEl.innerText = total.toFixed(2);
+    roomRevenueEl.innerText = (data.rooms||0).toFixed(2);
+    foodRevenueEl.innerText = (data.food||0).toFixed(2);
+    drinkRevenueEl.innerText = (data.drinks||0).toFixed(2);
 
-    renderChart(roomTotal, foodTotal, drinkTotal);
+    renderChart(data);
 }
 
-// Update finance when a bill is paid
-export async function updateFinance(amount, method) {
-    // Can log method, date etc. in future
-    await loadFinance(); // refresh totals
-}
+// ==================== RENDER CHART ====================
+function renderChart(data) {
+    const ctx = revenueChartEl.getContext("2d");
+    if(chartInstance) chartInstance.destroy();
 
-// Render Chart.js
-function renderChart(room, food, drink) {
-    const data = {
-        labels: ["Rooms", "Food", "Drinks"],
-        datasets: [{
-            label: "Revenue ($)",
-            data: [room, food, drink],
-            backgroundColor: ["#00BFFF", "#FFA500", "#8A2BE2"]
-        }]
-    };
-
-    const config = {
-        type: "bar",
-        data: data,
+    chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Rooms', 'Food', 'Drinks'],
+            datasets: [{
+                label: 'Revenue',
+                data: [data.rooms||0, data.food||0, data.drinks||0],
+                backgroundColor: [
+                    'rgba(30,144,255,0.7)',
+                    'rgba(255,165,0,0.7)',
+                    'rgba(138,43,226,0.7)'
+                ],
+                borderColor: [
+                    'rgba(30,144,255,1)',
+                    'rgba(255,165,0,1)',
+                    'rgba(138,43,226,1)'
+                ],
+                borderWidth: 1
+            }]
+        },
         options: {
             responsive: true,
             plugins: {
                 legend: { display: false },
-                title: { display: true, text: "Revenue by Type" }
+                title: { display: true, text: 'Revenue Breakdown' }
+            },
+            scales: {
+                y: { beginAtZero: true }
             }
         }
-    };
-
-    if (revenueChart) revenueChart.destroy();
-    revenueChart = new Chart(revenueChartEl, config);
+    });
 }
+
+// ==================== LISTEN TO BILLING CHANGES ====================
+db.collection("bills").onSnapshot(snapshot => {
+    snapshot.docChanges().forEach(change => {
+        if(change.type === "added" || change.type === "modified") {
+            const bill = change.doc.data();
+            if(bill.status === "Paid") {
+                // Increment finance revenue
+                db.collection("finance").doc("revenue").set({
+                    [bill.type.toLowerCase()]: firebase.firestore.FieldValue.increment(bill.price)
+                }, { merge: true });
+            }
+        }
+    });
+    fetchRevenue();
+});
+
+// ==================== INITIAL LOAD ====================
+fetchRevenue();
