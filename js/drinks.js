@@ -1,95 +1,61 @@
-import { db, storage } from './firebase.js';
-import { collection, addDoc, getDocs } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { updateStats } from './dashboard.js';
+// drinks.js
+import { db } from "./firebase.js";
+import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const drinkNameInput = document.getElementById("drinkName");
-const drinkPriceInput = document.getElementById("drinkPrice");
-const drinkPhotoInput = document.getElementById("drinkPhoto");
-const drinkMenuList = document.getElementById("drinkMenuList");
+const drinkMenuListEl = document.getElementById("drinkMenuList");
 
-// Add Drink Item
-window.addDrink = async function() {
-    const name = drinkNameInput.value.trim();
-    const price = parseFloat(drinkPriceInput.value);
-    const file = drinkPhotoInput.files[0];
+// Add Drink
+export async function addDrink() {
+    const name = document.getElementById("drinkName").value;
+    const price = parseFloat(document.getElementById("drinkPrice").value);
+    const photo = document.getElementById("drinkPhoto").files[0];
 
-    if (!name || !price || !file) {
-        alert("Please fill all fields and select a photo.");
-        return;
-    }
+    if (!name || !price || !photo) return alert("Fill all fields");
 
-    try {
-        const photoRef = ref(storage, `drinks/${file.name}_${Date.now()}`);
-        await uploadBytes(photoRef, file);
-        const photoURL = await getDownloadURL(photoRef);
+    const photoURL = URL.createObjectURL(photo);
 
-        await addDoc(collection(db, "drinks"), {
-            name,
-            price,
-            photoURL
-        });
+    await addDoc(collection(db, "drinks"), {
+        name, price, photoURL
+    });
 
-        drinkNameInput.value = "";
-        drinkPriceInput.value = "";
-        drinkPhotoInput.value = "";
+    loadDrinkMenu();
+}
 
-        loadDrinks();
-        updateStats();
-
-    } catch (err) {
-        console.error(err);
-        alert("Error adding drink: " + err.message);
-    }
-};
-
-// Load Drink Items
-export async function loadDrinks() {
-    drinkMenuList.innerHTML = "";
-    const drinksSnapshot = await getDocs(collection(db, "drinks"));
-
-    drinksSnapshot.forEach(docSnap => {
-        const drink = docSnap.data();
-        const drinkId = docSnap.id;
-
+// Load Drinks Menu
+export async function loadDrinkMenu() {
+    drinkMenuListEl.innerHTML = "";
+    const snapshot = await getDocs(collection(db, "drinks"));
+    snapshot.forEach(docSnap => {
+        const data = docSnap.data();
         const card = document.createElement("div");
         card.className = "cardItem";
-
         card.innerHTML = `
-            <img src="${drink.photoURL}" alt="${drink.name}">
-            <h4>${drink.name}</h4>
-            <p>Price: $${drink.price}</p>
-            <button onclick="orderDrink('${drinkId}', '${drink.name}', ${drink.price})">
-                Order
-            </button>
+            <img src="${data.photoURL}" alt="${data.name}">
+            <h4>${data.name}</h4>
+            <p>Price: $${data.price}</p>
         `;
-
-        drinkMenuList.appendChild(card);
+        // Click to order
+        card.addEventListener("click", () => orderDrink(docSnap.id, data));
+        drinkMenuListEl.appendChild(card);
     });
 }
 
 // Order Drink
-window.orderDrink = async function(drinkId, drinkName, price) {
-    const guestName = prompt("Enter Guest Service Name for billing:");
-    if (!guestName) return;
+async function orderDrink(id, drink) {
+    const confirmOrder = confirm(`Order ${drink.name} for $${drink.price}?`);
+    if (!confirmOrder) return;
 
-    try {
-        await addDoc(collection(db, "billing"), {
-            guest: guestName,
-            item: drinkName,
-            type: "drink",
-            price: price,
-            status: "unpaid",
-            paymentMethod: null,
-            date: new Date().toISOString().split('T')[0]
-        });
+    const guestUser = "guest_service"; // guest service user id/email
 
-        alert(`Drink "${drinkName}" ordered! Billing added for ${guestName}.`);
-        updateStats();
-    } catch (err) {
-        console.error(err);
-        alert("Error ordering drink: " + err.message);
-    }
-};
+    await addDoc(collection(db, "billing"), {
+        user: guestUser,
+        item: drink.name,
+        type: "drink",
+        price: drink.price,
+        status: "Pending",
+        paymentMethod: "",
+        timestamp: new Date()
+    });
 
-document.addEventListener("DOMContentLoaded", loadDrinks);
+    alert("Drink ordered! Added to Guest Service Billing.");
+}
