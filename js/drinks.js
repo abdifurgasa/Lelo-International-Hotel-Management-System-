@@ -1,6 +1,7 @@
 // drinks.js
 import { db } from "./firebase.js";
 import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { addBill } from "./billingHelper.js";
 
 const drinkMenuListEl = document.getElementById("drinkMenuList");
 
@@ -15,7 +16,9 @@ export async function addDrink() {
     const photoURL = URL.createObjectURL(photo);
 
     await addDoc(collection(db, "drinks"), {
-        name, price, photoURL
+        name,
+        price,
+        photoURL
     });
 
     loadDrinkMenu();
@@ -26,36 +29,19 @@ export async function loadDrinkMenu() {
     drinkMenuListEl.innerHTML = "";
     const snapshot = await getDocs(collection(db, "drinks"));
     snapshot.forEach(docSnap => {
-        const data = docSnap.data();
+        const drink = docSnap.data();
         const card = document.createElement("div");
         card.className = "cardItem";
         card.innerHTML = `
-            <img src="${data.photoURL}" alt="${data.name}">
-            <h4>${data.name}</h4>
-            <p>Price: $${data.price}</p>
+            <img src="${drink.photoURL}" alt="${drink.name}">
+            <h4>${drink.name}</h4>
+            <p>Price: $${drink.price}</p>
         `;
         // Click to order
-        card.addEventListener("click", () => orderDrink(docSnap.id, data));
+        card.addEventListener("click", async () => {
+            await addBill("guest_service", drink.name, "drink", drink.price);
+            alert(`${drink.name} ordered. Bill added to Guest Service.`);
+        });
         drinkMenuListEl.appendChild(card);
     });
-}
-
-// Order Drink
-async function orderDrink(id, drink) {
-    const confirmOrder = confirm(`Order ${drink.name} for $${drink.price}?`);
-    if (!confirmOrder) return;
-
-    const guestUser = "guest_service"; // guest service user id/email
-
-    await addDoc(collection(db, "billing"), {
-        user: guestUser,
-        item: drink.name,
-        type: "drink",
-        price: drink.price,
-        status: "Pending",
-        paymentMethod: "",
-        timestamp: new Date()
-    });
-
-    alert("Drink ordered! Added to Guest Service Billing.");
 }
