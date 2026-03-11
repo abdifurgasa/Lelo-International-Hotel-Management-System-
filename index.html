@@ -1,44 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lelo International Hotel - Login</title>
-<link rel="stylesheet" href="css/login.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lelo International Hotel System</title>
+    <!-- Link your dashboard CSS -->
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
-
 <body>
 
-<div class="loginContainer">
-  <div class="loginBox">
-
-    <h1 data-i18n="login">Login</h1>
-
-    <!-- Language -->
-    <select id="languageSelect">
-      <option value="en">English</option>
-      <option value="om">Afaan Oromoo</option>
-      <option value="am">Amharic</option>
-    </select>
-
-    <!-- Email -->
-    <input type="email" id="email" placeholder="Email">
-
-    <!-- Password -->
-    <div class="passwordWrapper">
-      <input type="password" id="password" placeholder="Password">
-      <span id="togglePassword">👁️</span>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Lelo Hotel</h2>
+        <ul>
+            <li><a href="login.html">Login</a></li>
+        </ul>
     </div>
 
-    <!-- Login Button -->
-    <button id="loginBtn" data-i18n="login">Login</button>
+    <!-- Main Content -->
+    <div class="content">
 
-    <p id="errorMsg" class="error"></p>
+        <!-- Hotel Banner -->
+        <div class="hotelBanner">
+            <div class="bannerOverlay">
+                <h1 class="welcomeTitle">Welcome to Lelo International Hotel</h1>
+                <p class="bannerSubtitle">Manage your hotel efficiently</p>
+                <p class="todayDate" id="todayDate"></p>
+                <!-- Login Button -->
+                <a href="login.html" class="btn">Login</a>
+            </div>
+        </div>
 
-  </div>
-</div>
+        <!-- Dashboard Stats Cards -->
+        <div class="cardBox">
+            <div class="statCard totalRooms">
+                <h3>Total Rooms</h3>
+                <p>120</p>
+            </div>
+            <div class="statCard occupiedRooms">
+                <h3>Occupied Rooms</h3>
+                <p>85</p>
+            </div>
+            <div class="statCard totalRevenue">
+                <h3>Total Revenue</h3>
+                <p>$12,500</p>
+            </div>
+        </div>
 
-<script type="module" src="js/login.js"></script>
+    </div>
+
+    <!-- JavaScript for dynamic date -->
+    <script>
+        const today = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('todayDate').innerText = today.toLocaleDateString('en-US', options);
+    </script>
 
 </body>
 </html>
